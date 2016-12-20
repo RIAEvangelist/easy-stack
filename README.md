@@ -75,7 +75,7 @@ The only difference is including via a script tag instead of using require.
     <html>
             <head>
                     <!-- this is the only difference -->
-                    <script src='./stack-vanilla.js'></script>
+                    <script src='./es5.js'></script>
                     <script>
                             console.log('my awesome app script');
                             var stack=new Stack;
@@ -208,7 +208,7 @@ This allows you to start adding requests immediately and only execute if the web
 ```
 
 
-# Extending stack es5 or vanilla browser
+# Extending stack node es5 or browser
 
 ```javascript
 
