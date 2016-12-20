@@ -14,6 +14,9 @@ JS Stacks are different from queues because they are LIFO (last in first out) un
 # Stable and easy to use
 Works great in node.js, webpack, browserify, or any other commonjs loader or compiler. To use in plain old vanilla browser javascript without common js just replace the requires in the examples with script tags. We show that below too. Any time you need a JS stack easy-stack is there for you.
 
+` require('easy-stack'); ` for ES6 node.  
+` require('easy-stack/es5.js'); ` for ES5 node and browser.
+
 **npm install easy-stack**
 
 npm info :  [See npm trends and stats for easy-stack](http://npm-stat.com/charts.html?package=easy-stack&author=&from=&to=)  
@@ -32,7 +35,7 @@ This work is licenced via the [DBAD Public Licence](http://www.dbad-license.org/
 
 ## Exposed methods and values
 
-|key|type|paramaters|default|description|
+|key|type|parameters|default|description|
 |----|----|----|----|----|
 |add|function|any number of functions|  |adds all parameter functions to stack and starts execution if autoRun is true, stack is not already running and stack is not forcibly stopped |
 |next|function|  |  |executes next item in stack if stack is not forcibly stopped|
@@ -45,7 +48,7 @@ This work is licenced via the [DBAD Public Licence](http://www.dbad-license.org/
 
 ```javascript
 
-    var stack=require('easy-stack');
+    var Stack=require('easy-stack');
     //create a new Stack instance
     var stack=new Stack;
 
@@ -100,7 +103,7 @@ This allows you to start adding requests immediately and only execute if the web
 
 ```javascript
 
-    var stack=require('easy-stack');
+    var Stack=require('easy-stack');
 
     //ws-share just makes it easier to share websocket code and ensure you don't open a websocket more than once
     var WS=require('ws-share');
@@ -183,12 +186,33 @@ This allows you to start adding requests immediately and only execute if the web
 
 ```
 
-
-# Extending stack
+# Extending ES6 stack.js
 
 ```javascript
 
-    var stack=require('easy-stack');
+    const Stack=require('easy-stack');
+
+    class MyAwesomestack extends Stack{
+
+        isStopped(){
+            return this.stop;
+        }
+
+        removeThirdItem(){
+            this.contents.splice(2,1);
+            return this.contents;
+        }
+    };
+
+
+```
+
+
+# Extending stack es5 or vanilla browser
+
+```javascript
+
+    var Stack=require('easy-stack');
 
     //MyAwesomestack inherits from stack
     MyAwesomestack.prototype = new Stack;
