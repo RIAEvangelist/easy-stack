@@ -1,76 +1,39 @@
-function Stack(){
-    Object.defineProperties(
-        this,
-        {
-            add:{
-                enumerable:true,
-                writable:false,
-                value:addToStack
-            },
-            next:{
-                enumerable:true,
-                writable:false,
-                value:run
-            },
-            clear:{
-                enumerable:true,
-                writable:false,
-                value:clearStack
-            },
-            contents:{
-                enumerable:false,
-                get:getStack,
-                set:setStack
-            },
-            autoRun:{
-                enumerable:true,
-                writable:true,
-                value:true
-            },
-            stop:{
-                enumerable:true,
-                writable:true,
-                value:false
-            }
+class Stack{
+    constructor(){
+        this.stack=[];
+        this.autoRun=true;
+        this.running=false;
+        this.stop=false;
+    }
+
+    clear(){
+        this.stack=[];
+        return this.stack;
+    }
+
+    contents(val){
+        if(val){
+          this.stack=val;
         }
-    );
-
-    var stack=[];
-    var running=false;
-    var stop=false;
-
-    function clearStack(){
-        stack=[];
-        return stack;
+        return this.stack;
     }
 
-    function getStack(){
-        return stack;
-    }
-
-    function setStack(val){
-        stack=val;
-        return stack;
-    }
-
-    function addToStack(){
-        for(var i in arguments){
-            stack.push(arguments[i]);
-        }
-        if(!running && !this.stop && this.autoRun){
+    add(...callbacks){
+        this.stack.push(...callbacks);
+        if(!this.running && !this.stop && this.autoRun){
             this.next();
         }
     }
 
-    function run(){
-        running=true;
-        if(stack.length<1 || this.stop){
-            running=false;
+    next(){
+        this.running=true;
+        if(this.stack.length<1 || this.stop){
+            this.running=false;
             return;
         }
 
-        stack.shift().bind(this)();
+        this.stack.pop().bind(this)();
     }
 }
 
-module.exports=stack;
+module.exports=Stack;
