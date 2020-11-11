@@ -1,6 +1,6 @@
 {
   "name": "easy-stack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple JS stack with auto run for node and browsers",
   "main": "stack.js",
   "scripts": {
