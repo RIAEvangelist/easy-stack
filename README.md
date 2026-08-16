@@ -4,7 +4,7 @@
 
 Zero-dependency cooperative LIFO execution for Node.js and browsers.
 
-[Overview](https://riaevangelist.github.io/easy-stack/) · [Guide](https://riaevangelist.github.io/easy-stack/guide/) · [API](https://riaevangelist.github.io/easy-stack/api/) · [Patterns](https://riaevangelist.github.io/easy-stack/patterns/) · [Browser](https://riaevangelist.github.io/easy-stack/browser/) · [Examples](https://riaevangelist.github.io/easy-stack/examples/) · [Stack vs queue](https://riaevangelist.github.io/easy-stack/queue/) · [Migration](https://riaevangelist.github.io/easy-stack/migration/) · [Testing](https://riaevangelist.github.io/easy-stack/testing/)
+[Overview](https://riaevangelist.github.io/easy-stack/) · [Guide](https://riaevangelist.github.io/easy-stack/guide/) · [API](https://riaevangelist.github.io/easy-stack/api/) · [Patterns](https://riaevangelist.github.io/easy-stack/patterns/) · [Browser](https://riaevangelist.github.io/easy-stack/browser/) · [Examples](https://riaevangelist.github.io/easy-stack/examples/) · [Playground](https://riaevangelist.github.io/easy-stack/playground/) · [Stack vs queue](https://riaevangelist.github.io/easy-stack/queue/) · [Migration](https://riaevangelist.github.io/easy-stack/migration/) · [Testing](https://riaevangelist.github.io/easy-stack/testing/)
 
 [![npm version](https://img.shields.io/npm/v/easy-stack?logo=npm)](https://www.npmjs.com/package/easy-stack)
 [![npm downloads](https://img.shields.io/npm/dm/easy-stack?logo=npm)](https://www.npmjs.com/package/easy-stack)

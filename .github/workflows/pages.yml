@@ -65,6 +65,7 @@ jobs:
             _site/patterns \
             _site/browser \
             _site/examples \
+            _site/playground \
             _site/queue \
             _site/migration \
             _site/testing \
@@ -77,10 +78,11 @@ jobs:
           cp patterns/index.html _site/patterns/
           cp browser/index.html _site/browser/
           cp examples/index.html _site/examples/
+          cp playground/index.html _site/playground/
           cp queue/index.html _site/queue/
           cp migration/index.html _site/migration/
           cp testing/index.html _site/testing/
-          cp assets/site.css assets/site.js assets/easy-stack-header.png assets/og.png _site/assets/
+          cp assets/site.css assets/site.js assets/playground.js assets/easy-stack-header.png assets/og.png _site/assets/
           cp stack.js stack-vanilla.js es5.js CHANGELOG.md MIGRATION.md licence _site/
           cp --recursive coverage/node _site/reports/node
           cp --recursive coverage/chrome _site/reports/chrome
@@ -93,11 +95,13 @@ jobs:
             _site/patterns/index.html \
             _site/browser/index.html \
             _site/examples/index.html \
+            _site/playground/index.html \
             _site/queue/index.html \
             _site/migration/index.html \
             _site/testing/index.html \
             _site/assets/site.css \
             _site/assets/site.js \
+            _site/assets/playground.js \
             _site/assets/easy-stack-header.png \
             _site/assets/og.png \
             _site/stack.js \

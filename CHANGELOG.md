@@ -2,6 +2,12 @@
 
 All notable changes to easy-stack are documented here.
 
+## Unreleased
+
+- Correct the documentation hero image so responsive sizing preserves its intrinsic aspect ratio.
+- Add a dedicated, dependency-free browser Playground backed by the real stack module and vanilla-test controller contracts.
+- Expand the curated GitHub Pages documentation from nine focused pages to ten.
+
 ## 2.0.0 — 2026-08-16
 
 - Add native ESM, CommonJS, modern classic-browser, and ES5 entry points with explicit package exports.

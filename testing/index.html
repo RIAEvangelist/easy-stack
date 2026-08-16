@@ -33,6 +33,7 @@
                     <li><a href="../patterns/">Patterns</a></li>
                     <li><a href="../browser/">Browser</a></li>
                     <li><a href="../examples/">Examples</a></li>
+                    <li><a href="../playground/">Playground</a></li>
                     <li><a href="../queue/">Stack vs queue</a></li>
                     <li><a href="../migration/">Migration</a></li>
                     <li><a href="../testing/" aria-current="page">Testing</a></li>
@@ -57,6 +58,7 @@
                             <thead><tr><th>Suite</th><th>What it proves</th><th>Runner</th></tr></thead>
                             <tbody>
                                 <tr><td>Shared core</td><td>LIFO order, synchronous start, pause/resume, active insertion, contents, validation, recovery, async hand-off, and isolation.</td><td>vanilla-test in Node and Chrome</td></tr>
+                                <tr><td>Playground controller</td><td>Newest-first display, cooperative and manual hand-offs, stop/release, clear/reset, and immutable state snapshots.</td><td>vanilla-test in Node</td></tr>
                                 <tr><td>Package contract</td><td>ESM, CommonJS, deep paths, classic globals, ES5 regression, metadata, and zero runtime dependencies.</td><td>vanilla-test in Node</td></tr>
                                 <tr><td>Documentation</td><td>Every route, required section, asset, fragment, README link, workflow, and no-TypeScript contract.</td><td>vanilla-test in Node</td></tr>
                                 <tr><td>Local server</td><td>Content types, page/module/image delivery, containment, malformed paths, and missing files.</td><td>vanilla-test in Node</td></tr>
@@ -82,6 +84,7 @@
                         </table>
                     </div>
                     <div class="code-block"><pre><code>npm test
+npm run test:playground
 npm run coverage
 npm run coverage:node
 npm run coverage:chrome</code></pre></div>

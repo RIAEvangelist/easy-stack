@@ -3,17 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Run easy-stack in the browser and adapt recipes for manual batches, pause gates, and newest-first work.">
+    <meta name="description" content="Adapt focused easy-stack recipes for manual batches, pause gates, and newest-first work, then continue in the interactive playground.">
     <meta name="color-scheme" content="dark">
     <meta property="og:title" content="Examples · easy-stack">
-    <meta property="og:description" content="A live LIFO demo and practical easy-stack recipes.">
+    <meta property="og:description" content="Practical easy-stack recipes with a direct path to the interactive playground.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/examples/">
     <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
     <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Examples · easy-stack">
-    <meta name="twitter:description" content="A live LIFO demo and practical easy-stack recipes.">
+    <meta name="twitter:description" content="Practical easy-stack recipes with a direct path to the interactive playground.">
     <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
     <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/examples/">
     <link rel="stylesheet" href="../assets/site.css">
@@ -33,6 +33,7 @@
                     <li><a href="../patterns/">Patterns</a></li>
                     <li><a href="../browser/">Browser</a></li>
                     <li><a href="../examples/" aria-current="page">Examples</a></li>
+                    <li><a href="../playground/">Playground</a></li>
                     <li><a href="../queue/">Stack vs queue</a></li>
                     <li><a href="../migration/">Migration</a></li>
                     <li><a href="../testing/">Testing</a></li>
@@ -44,21 +45,19 @@
     <main id="main-content">
         <header class="site-shell page-hero" id="examples">
             <p class="eyebrow">Examples</p>
-            <h1>See newest-first execution happen.</h1>
-            <p class="lede">The live example imports the deployed package source directly. The recipes below isolate one behavior at a time.</p>
+            <h1>Adapt one focused pattern at a time.</h1>
+            <p class="lede">These recipes isolate common behaviors. Use the dedicated playground when you want to change state and watch the real stack respond.</p>
         </header>
 
         <div class="site-shell page-layout">
             <article class="prose">
-                <section id="live-demo">
-                    <h2>Live browser demo</h2>
-                    <p>The demo adds four labels in reading order, then drains the stack. The output should reverse that order and end with zero pending tasks.</p>
-                    <div class="demo-panel">
-                        <div class="demo-panel__controls">
-                            <button class="button" type="button" data-demo-run>Run LIFO demo</button>
-                            <span class="status">Native module ready</span>
-                        </div>
-                        <output data-demo-output aria-live="polite">Select “Run LIFO demo” to execute the deployed stack.</output>
+                <section id="try-playground">
+                    <h2>Try the real stack interactively</h2>
+                    <p>The Playground imports the deployed module, exposes each control explicitly, and shows pending work newest-first beside the execution trace.</p>
+                    <div class="callout">
+                        <strong>No simulated state.</strong>
+                        <p>Load cooperative, manual, or stopped scenarios and inspect <code>size</code>, <code>running</code>, <code>autoRun</code>, and <code>stop</code> after every synchronous transition.</p>
+                        <div class="actions"><a class="button" href="../playground/">Open the Playground</a></div>
                     </div>
                 </section>
 
@@ -99,8 +98,8 @@ stack.next(); <span class="code-comment">// renderPreview begins first</span></c
 
     element.classList.add(<span class="code-string">'visible'</span>);
 });</code></pre></div>
-                    <a class="next-page" href="../queue/">
-                        <span>Next page<strong>Stack vs queue</strong></span>
+                    <a class="next-page" href="../playground/">
+                        <span>Next page<strong>Playground</strong></span>
                         <b aria-hidden="true">→</b>
                     </a>
                 </section>

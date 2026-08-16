@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Explore easy-stack with a deterministic browser playground for LIFO order, manual hand-offs, stop gates, clear, and reset.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Playground · easy-stack">
+    <meta property="og:description" content="Operate a real easy-stack instance and inspect every synchronous state transition.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/playground/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Playground · easy-stack">
+    <meta name="twitter:description" content="Operate a real easy-stack instance and inspect every synchronous state transition.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/playground/">
+    <link rel="stylesheet" href="../assets/site.css">
+    <title>Playground · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../">Overview</a></li>
+                    <li><a href="../guide/">Guide</a></li>
+                    <li><a href="../api/">API</a></li>
+                    <li><a href="../patterns/">Patterns</a></li>
+                    <li><a href="../browser/">Browser</a></li>
+                    <li><a href="../examples/">Examples</a></li>
+                    <li><a href="../playground/" aria-current="page">Playground</a></li>
+                    <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../migration/">Migration</a></li>
+                    <li><a href="../testing/">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="playground">
+            <p class="eyebrow">Browser playground</p>
+            <h1>Operate the stack one transition at a time.</h1>
+            <p class="lede">This lab imports the deployed <code>stack.js</code> module. Load a scenario, inspect the newest task, and control each synchronous hand-off.</p>
+        </header>
+
+        <div class="site-shell playground-page" data-playground>
+            <section class="playground-lab" id="controls" aria-labelledby="controls-title">
+                <div class="playground-lab__header">
+                    <div>
+                        <p class="eyebrow">Real stack state</p>
+                        <h2 id="controls-title">Build and control a batch.</h2>
+                        <p>Presets load a complete batch. The stopped scenario keeps <code>autoRun=true</code> to show that <code>stop</code> blocks selection.</p>
+                    </div>
+                    <div class="playground-preset">
+                        <label for="playground-preset">Scenario</label>
+                        <div class="playground-preset__controls">
+                            <select id="playground-preset" data-playground-preset>
+                                <option value="cooperative">Cooperative LIFO batch</option>
+                                <option value="manual">Manual hand-off</option>
+                                <option value="stopped">Stopped cooperative batch</option>
+                            </select>
+                            <button class="button button--secondary" type="button" data-playground-load>Load</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="playground-controls">
+                    <form class="playground-add" data-playground-add>
+                        <div class="field">
+                            <label for="playground-label">Task label</label>
+                            <input id="playground-label" type="text" maxlength="60" placeholder="for example, render preview" required data-playground-label>
+                        </div>
+                        <div class="field">
+                            <label for="playground-handoff">Task behavior</label>
+                            <select id="playground-handoff" data-playground-handoff>
+                                <option value="cooperative">Calls this.next()</option>
+                                <option value="manual">Waits for manual Next</option>
+                            </select>
+                        </div>
+                        <button class="button" type="submit">Add to top</button>
+                    </form>
+
+                    <fieldset class="playground-flags">
+                        <legend>Runner flags</legend>
+                        <label><input type="checkbox" data-playground-auto-run> <span><code>autoRun</code><small>Only affects future additions</small></span></label>
+                        <label><input type="checkbox" data-playground-stop> <span><code>stop</code><small>Blocks selection without removing work</small></span></label>
+                    </fieldset>
+
+                    <div class="playground-actions" role="group" aria-label="Stack actions">
+                        <button class="button" type="button" data-playground-next>Next</button>
+                        <button class="button button--secondary" type="button" data-playground-release>Release stop</button>
+                        <button class="button button--secondary" type="button" data-playground-clear>Clear pending</button>
+                        <button class="button button--secondary" type="button" data-playground-reset>Reset stack</button>
+                    </div>
+                </div>
+
+                <p class="playground-status" role="status" aria-live="polite" aria-atomic="true" data-playground-status>Loading the playground…</p>
+
+                <div class="playground-results">
+                    <section class="playground-result" aria-labelledby="state-title">
+                        <h2 id="state-title">State</h2>
+                        <dl class="playground-state">
+                            <div><dt>size</dt><dd data-playground-size>0</dd></div>
+                            <div><dt>running</dt><dd data-playground-running>false</dd></div>
+                            <div><dt>autoRun</dt><dd data-playground-auto-run-value>true</dd></div>
+                            <div><dt>stop</dt><dd data-playground-stop-value>false</dd></div>
+                        </dl>
+                    </section>
+
+                    <section class="playground-result" id="pending" aria-labelledby="pending-title">
+                        <h2 id="pending-title">Pending · newest first</h2>
+                        <ol class="playground-list playground-list--pending" data-playground-pending>
+                            <li class="playground-list__empty">No pending tasks.</li>
+                        </ol>
+                    </section>
+
+                    <section class="playground-result" id="trace" aria-labelledby="trace-title">
+                        <h2 id="trace-title">Execution trace</h2>
+                        <ol class="playground-list" data-playground-trace>
+                            <li class="playground-list__empty">No task has run yet.</li>
+                        </ol>
+                    </section>
+                </div>
+
+                <noscript><p class="callout">JavaScript is required for the interactive lab. The rest of the documentation remains available without it.</p></noscript>
+            </section>
+
+            <aside class="playground-guide" aria-label="Playground behavior">
+                <strong>What to notice</strong>
+                <ul>
+                    <li>Pending work is displayed top-first.</li>
+                    <li>Cooperative tasks drain synchronously through <code>this.next()</code>.</li>
+                    <li>Manual tasks stay active until another Next hand-off.</li>
+                    <li>Releasing <code>stop</code> does not resume work by itself.</li>
+                    <li>Clear preserves flags; Reset restores constructor defaults.</li>
+                </ul>
+                <a class="next-page" href="../queue/">
+                    <span>Next page<strong>Stack vs queue</strong></span>
+                    <b aria-hidden="true">→</b>
+                </a>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack">GitHub</a>
+                <a href="https://www.npmjs.com/package/easy-stack">npm</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/stack.js">Module source</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="../assets/site.js"></script>
+    <script type="module" src="../assets/playground.js"></script>
+</body>
+</html>

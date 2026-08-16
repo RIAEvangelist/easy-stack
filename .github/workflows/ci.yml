@@ -152,9 +152,9 @@ jobs:
             grep --fixed-strings --line-regexp --quiet -- "$REQUIRED_FILE" "$PACK_FILE_LIST"
           done
 
-          if grep --extended-regexp --quiet '^package/(assets|coverage|example|scripts|test|\.github)/' "$PACK_FILE_LIST"; then
+          if grep --extended-regexp --quiet '^package/(assets|coverage|example|playground|scripts|test|\.github)/' "$PACK_FILE_LIST"; then
             echo "Packed artifact contains repository-only files."
-            grep --extended-regexp '^package/(assets|coverage|example|scripts|test|\.github)/' "$PACK_FILE_LIST"
+            grep --extended-regexp '^package/(assets|coverage|example|playground|scripts|test|\.github)/' "$PACK_FILE_LIST"
             exit 1
           fi
 
