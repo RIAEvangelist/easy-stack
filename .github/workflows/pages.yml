@@ -50,6 +50,7 @@ jobs:
       - name: Verify Node and Chrome coverage gates
         env:
           CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          VANILLA_TEST_CHROME_NO_SANDBOX: '1'
         run: npm run coverage -- --chrome-path "$CHROME_PATH"
 
       - name: Verify package contents
