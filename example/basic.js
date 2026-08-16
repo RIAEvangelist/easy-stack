@@ -1,18 +1,17 @@
-var Stack=require('../stack');
-//create a new Stack instance
-var stack=new Stack;
-stack.autoRun=false;
+import Stack from '../stack.js';
 
-for(var i=0; i<50; i++){
-    //add a bunch of stuff to the stack
-    stack.add(makeRequest.bind(stack,i));
+const stack = new Stack();
+const executionOrder = [];
+
+stack.autoRun = false;
+
+for (let index = 0; index < 5; index += 1) {
+    stack.add(function runItem() {
+        executionOrder.push(index);
+        this.next();
+    });
 }
 
 stack.next();
 
-function makeRequest(index){
-    //do stuff
-    console.log(`making LIFO request ${index}`);
-
-    this.next();
-}
+console.log('LIFO order:', executionOrder.join(' → '));

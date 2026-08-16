@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Install easy-stack, choose an ESM or CommonJS import, and run a first cooperative LIFO flow.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Guide · easy-stack">
+    <meta property="og:description" content="Install easy-stack and build a first cooperative newest-first execution flow.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/guide/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Guide · easy-stack">
+    <meta name="twitter:description" content="Install easy-stack and build a first cooperative newest-first execution flow.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/guide/">
+    <link rel="stylesheet" href="../assets/site.css">
+    <title>Guide · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../">Overview</a></li>
+                    <li><a href="../guide/" aria-current="page">Guide</a></li>
+                    <li><a href="../api/">API</a></li>
+                    <li><a href="../patterns/">Patterns</a></li>
+                    <li><a href="../browser/">Browser</a></li>
+                    <li><a href="../examples/">Examples</a></li>
+                    <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../migration/">Migration</a></li>
+                    <li><a href="../testing/">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="start">
+            <p class="eyebrow">Guide</p>
+            <h1>From install to first LIFO run.</h1>
+            <p class="lede">Create a stack, add functions, and let each active function decide when the next newest item should run.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="install">
+                    <h2>Install and import</h2>
+                    <p>easy-stack has no runtime dependencies. Node.js 12.22 or newer can use the CommonJS entry; modern Node and browsers can use the native ES module.</p>
+                    <div class="code-block"><pre><code>npm install easy-stack</code></pre></div>
+                    <div class="code-block"><pre><code><span class="code-comment">// Native ESM</span>
+<span class="code-keyword">import</span> Stack <span class="code-keyword">from</span> <span class="code-string">'easy-stack'</span>;
+
+<span class="code-comment">// CommonJS</span>
+<span class="code-keyword">const</span> Stack = require(<span class="code-string">'easy-stack'</span>);</code></pre></div>
+                    <p>Both imports expose the same public behavior. The package export map selects the correct implementation without a compiler or bundler.</p>
+                </section>
+
+                <section id="first-stack">
+                    <h2>Run a first stack</h2>
+                    <p>Disable auto-run while loading the example so the complete batch is present before execution starts. The last callback added executes first.</p>
+                    <div class="code-block"><pre><code><span class="code-keyword">import</span> Stack <span class="code-keyword">from</span> <span class="code-string">'easy-stack'</span>;
+
+<span class="code-keyword">const</span> stack = <span class="code-keyword">new</span> Stack();
+<span class="code-keyword">const</span> order = [];
+stack.autoRun = <span class="code-keyword">false</span>;
+
+stack.add(
+    <span class="code-keyword">function</span> first() {
+        order.push(<span class="code-string">'first'</span>);
+        <span class="code-keyword">this</span>.next();
+    },
+    <span class="code-keyword">function</span> second() {
+        order.push(<span class="code-string">'second'</span>);
+        <span class="code-keyword">this</span>.next();
+    },
+    <span class="code-keyword">function</span> third() {
+        order.push(<span class="code-string">'third'</span>);
+        <span class="code-keyword">this</span>.next();
+    }
+);
+
+stack.next();
+console.log(order); <span class="code-comment">// ['third', 'second', 'first']</span></code></pre></div>
+                    <div class="callout">
+                        <strong>Use regular functions when you need the stack binding.</strong>
+                        <p>easy-stack calls each task with the stack as <code>this</code>. Arrow functions keep their lexical <code>this</code> and therefore cannot call <code>this.next()</code>.</p>
+                    </div>
+                </section>
+
+                <section id="model">
+                    <h2>Understand the cooperative model</h2>
+                    <p>Auto-run controls only the initial start. Once a task is active, the stack waits until that task calls <code>next()</code>. This makes a task a deliberate hand-off point for synchronous work, timers, events, or network responses.</p>
+                    <ul>
+                        <li><code>add()</code> places every supplied function on top in argument order.</li>
+                        <li>The last supplied function is selected first.</li>
+                        <li>A task may pause simply by returning without calling <code>next()</code>.</li>
+                        <li>Resume later by calling <code>stack.next()</code> from the appropriate completion signal.</li>
+                        <li>Set <code>stop = true</code> to gate selection without discarding pending functions.</li>
+                    </ul>
+                    <a class="next-page" href="../api/">
+                        <span>Next page<strong>API reference</strong></span>
+                        <b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Guide outcome">
+                <strong>After this page</strong>
+                <ul>
+                    <li>Install with zero runtime dependencies</li>
+                    <li>Choose ESM or CommonJS</li>
+                    <li>Predict the LIFO order</li>
+                    <li>Hand control forward explicitly</li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack">GitHub</a>
+                <a href="https://www.npmjs.com/package/easy-stack">npm</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/MIGRATION.md">Migration</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="../assets/site.js"></script>
+</body>
+</html>

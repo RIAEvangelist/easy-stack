@@ -1,3 +1,5 @@
+'use strict';
+
 const stacks = new WeakMap();
 const states = new WeakMap();
 
@@ -89,7 +91,5 @@ class Stack {
     }
 }
 
-export {
-    Stack as default,
-    Stack
-};
+module.exports = Stack;
+module.exports.Stack = Stack;

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Migrate easy-stack 1.x applications to v2 while preserving CommonJS and cooperative LIFO behavior.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="v2 migration · easy-stack">
+    <meta property="og:description" content="Upgrade easy-stack 1.x imports, state access, validation, and browser paths to v2.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/migration/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="v2 migration · easy-stack">
+    <meta name="twitter:description" content="Upgrade easy-stack 1.x imports, state access, validation, and browser paths to v2.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/migration/">
+    <link rel="stylesheet" href="../assets/site.css">
+    <title>v2 migration · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../">Overview</a></li>
+                    <li><a href="../guide/">Guide</a></li>
+                    <li><a href="../api/">API</a></li>
+                    <li><a href="../patterns/">Patterns</a></li>
+                    <li><a href="../browser/">Browser</a></li>
+                    <li><a href="../examples/">Examples</a></li>
+                    <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../migration/" aria-current="page">Migration</a></li>
+                    <li><a href="../testing/">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="migration">
+            <p class="eyebrow">v1 → v2</p>
+            <h1>Modern entries. Familiar execution.</h1>
+            <p class="lede">Version 2 keeps synchronous cooperative LIFO flow while repairing the divergent package builds and making failure behavior explicit.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="changes">
+                    <h2>What stays compatible</h2>
+                    <ul>
+                        <li><code>require('easy-stack')</code> still returns the constructor.</li>
+                        <li>The paths <code>easy-stack/stack.js</code> and <code>easy-stack/es5.js</code> remain exported.</li>
+                        <li>Tasks still execute synchronously, newest first, with the stack bound as <code>this</code>.</li>
+                        <li>Tasks still call <code>this.next()</code> when lower work should continue.</li>
+                        <li><code>autoRun</code>, <code>stop</code>, <code>clear()</code>, and the live contents array remain available.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>What changes deliberately</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>v1 behavior</th><th>v2 contract</th></tr></thead>
+                            <tbody>
+                                <tr><td>Package root was CommonJS only.</td><td>Conditional exports provide native ESM and CommonJS.</td></tr>
+                                <tr><td>Node support claimed Node 6.</td><td>Shipped runtime support begins at Node 12.22.</td></tr>
+                                <tr><td><code>add()</code> returned <code>undefined</code>.</td><td><code>add()</code> returns the stack for chaining.</td></tr>
+                                <tr><td>Invalid callbacks failed only when invoked.</td><td>The entire batch is validated atomically before mutation.</td></tr>
+                                <tr><td>A thrown task left <code>running</code> stuck true.</td><td>The same error is rethrown after the runner returns to idle.</td></tr>
+                                <tr><td>Root <code>contents()</code> and ES5 <code>contents</code> disagreed.</td><td>Every entry uses <code>contents()</code>; the live array is also <code>stack.stack</code>.</td></tr>
+                                <tr><td><code>require('easy-stack/es5.js')</code> returned an empty object.</td><td>The export map routes CommonJS consumers to a working constructor.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Update imports and contents access</h2>
+                    <div class="code-block"><pre><code><span class="code-comment">// CommonJS remains valid</span>
+<span class="code-keyword">const</span> Stack = require(<span class="code-string">'easy-stack'</span>);
+
+<span class="code-comment">// Native ESM is now available</span>
+<span class="code-keyword">import</span> Stack <span class="code-keyword">from</span> <span class="code-string">'easy-stack'</span>;
+
+<span class="code-comment">// Read or replace the live array</span>
+stack.contents();
+stack.contents([first, second]);
+stack.stack = [first, second];</code></pre></div>
+                    <div class="callout">
+                        <strong>Classic-browser contents change</strong>
+                        <p>If v1 browser code treated <code>stack.contents</code> as an array property, change it to <code>stack.stack</code> or call <code>stack.contents()</code>.</p>
+                    </div>
+                </section>
+
+                <section id="checklist">
+                    <h2>Upgrade checklist</h2>
+                    <ol>
+                        <li>Confirm production Node is 12.22 or newer.</li>
+                        <li>Keep CommonJS imports or adopt the new native ESM import.</li>
+                        <li>Search browser code for property-style <code>.contents</code> access.</li>
+                        <li>Ensure every value passed to <code>add()</code> is a function.</li>
+                        <li>Check code that depended on <code>add()</code> returning <code>undefined</code>.</li>
+                        <li>Remove direct assignments to <code>stack.running</code>; it is now read-only.</li>
+                        <li>Run the application's failure paths; a thrown task is now recoverable.</li>
+                        <li>Exercise classic-script pages through HTTP, not a local file URL.</li>
+                    </ol>
+                    <a class="next-page" href="../testing/">
+                        <span>Next page<strong>Testing and evidence</strong></span>
+                        <b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Migration summary">
+                <strong>Release boundary</strong>
+                <ul>
+                    <li>Runtime: Node ≥12.22</li>
+                    <li>Dev tests: Node ≥22.12</li>
+                    <li>Root require preserved</li>
+                    <li>Native ESM added</li>
+                    <li>Failure recovery repaired</li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack">GitHub</a>
+                <a href="https://www.npmjs.com/package/easy-stack">npm</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/MIGRATION.md">Migration file</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/CHANGELOG.md">Changelog</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="../assets/site.js"></script>
+</body>
+</html>

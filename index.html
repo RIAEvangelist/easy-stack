@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="easy-stack is zero-dependency cooperative LIFO execution for Node.js and browsers, with native ESM, CommonJS, and classic-script support.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="easy-stack · explicit LIFO flow control">
+    <meta property="og:description" content="A tiny zero-dependency stack runner for work that should execute newest-first.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="easy-stack · explicit LIFO flow control">
+    <meta name="twitter:description" content="A tiny zero-dependency stack runner for work that should execute newest-first.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/">
+    <link rel="stylesheet" href="./assets/site.css">
+    <title>easy-stack · explicit LIFO flow control</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="./" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="./" aria-current="page">Overview</a></li>
+                    <li><a href="./guide/">Guide</a></li>
+                    <li><a href="./api/">API</a></li>
+                    <li><a href="./patterns/">Patterns</a></li>
+                    <li><a href="./browser/">Browser</a></li>
+                    <li><a href="./examples/">Examples</a></li>
+                    <li><a href="./queue/">Stack vs queue</a></li>
+                    <li><a href="./migration/">Migration</a></li>
+                    <li><a href="./testing/">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section class="hero" id="overview">
+            <div class="site-shell hero__grid">
+                <div class="hero__copy">
+                    <p class="eyebrow">Zero dependencies · Node + browser</p>
+                    <h1>Newest work goes first.</h1>
+                    <p class="lede">easy-stack is a small cooperative LIFO runner for priority work, staged requests, and flows where the most recently added task should execute next.</p>
+                    <div class="install-strip" data-copy-text="npm install easy-stack">
+                        <code>npm install easy-stack</code>
+                        <button class="copy-button" type="button">Copy</button>
+                    </div>
+                    <div class="hero__actions">
+                        <a class="button" href="./guide/">Build your first stack</a>
+                        <a class="button button--secondary" href="./api/">Read the API</a>
+                    </div>
+                </div>
+                <div class="hero__visual">
+                    <img src="./assets/easy-stack-header.png" alt="easy-stack wordmark beside a glowing stack whose newest amber layer is on top" width="1942" height="809">
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="guarantees">
+            <div class="site-shell">
+                <div class="section__intro">
+                    <p class="eyebrow">The execution contract</p>
+                    <h2>Small surface. Explicit control.</h2>
+                    <p>The v2 package keeps the original cooperative model and makes its guarantees consistent across native ESM, CommonJS, and classic browser scripts.</p>
+                </div>
+                <div class="card-grid">
+                    <article class="card">
+                        <span class="card__index">01</span>
+                        <h3>Strictly LIFO</h3>
+                        <p>The most recently added callback is always the next callback selected.</p>
+                    </article>
+                    <article class="card">
+                        <span class="card__index">02</span>
+                        <h3>Cooperative</h3>
+                        <p>Each callback decides when the flow continues by calling <code>this.next()</code>.</p>
+                    </article>
+                    <article class="card">
+                        <span class="card__index">03</span>
+                        <h3>Synchronous start</h3>
+                        <p>With auto-run enabled, the first eligible task begins before <code>add()</code> returns.</p>
+                    </article>
+                    <article class="card">
+                        <span class="card__index">04</span>
+                        <h3>Recoverable</h3>
+                        <p>A thrown callback error returns the runner to idle without swallowing the error.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="routes">
+            <div class="site-shell">
+                <div class="section__intro">
+                    <p class="eyebrow">Focused documentation</p>
+                    <h2>One question per page.</h2>
+                    <p>Pick the page that matches the work in front of you. Each route stays short enough to scan and complete.</p>
+                </div>
+                <div class="card-grid card-grid--routes">
+                    <a class="route-card" href="./guide/">
+                        <span class="route-card__tag">Start here</span>
+                        <h3>Guide</h3>
+                        <p>Install, import, and run a first cooperative stack.</p>
+                    </a>
+                    <a class="route-card" href="./api/">
+                        <span class="route-card__tag">Contract</span>
+                        <h3>API reference</h3>
+                        <p>Methods, state, return values, validation, and errors.</p>
+                    </a>
+                    <a class="route-card" href="./patterns/">
+                        <span class="route-card__tag">Design</span>
+                        <h3>Execution patterns</h3>
+                        <p>Priority insertion, pause gates, async hand-offs, and recovery.</p>
+                    </a>
+                    <a class="route-card" href="./browser/">
+                        <span class="route-card__tag">Web</span>
+                        <h3>Browser use</h3>
+                        <p>Native modules, classic scripts, ES5 compatibility, and serving.</p>
+                    </a>
+                    <a class="route-card" href="./examples/">
+                        <span class="route-card__tag">Practice</span>
+                        <h3>Examples</h3>
+                        <p>Run the live demo and adapt focused recipes.</p>
+                    </a>
+                    <a class="route-card" href="./queue/">
+                        <span class="route-card__tag">Choose</span>
+                        <h3>Stack vs queue</h3>
+                        <p>Decide whether newest-first or oldest-first fits your workload.</p>
+                    </a>
+                    <a class="route-card" href="./migration/">
+                        <span class="route-card__tag">Upgrade</span>
+                        <h3>v2 migration</h3>
+                        <p>Keep compatibility while adopting modern entry points.</p>
+                    </a>
+                    <a class="route-card" href="./testing/">
+                        <span class="route-card__tag">Evidence</span>
+                        <h3>Testing</h3>
+                        <p>See the vanilla-test suites, coverage gates, package smoke, and CI matrix.</p>
+                    </a>
+                    <a class="route-card" href="https://github.com/RIAEvangelist/easy-stack">
+                        <span class="route-card__tag">Source</span>
+                        <h3>GitHub</h3>
+                        <p>Inspect the implementation, report an issue, or contribute.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack">GitHub</a>
+                <a href="https://www.npmjs.com/package/easy-stack">npm</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/CHANGELOG.md">Changelog</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="./assets/site.js"></script>
+</body>
+</html>

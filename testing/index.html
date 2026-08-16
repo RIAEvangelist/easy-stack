@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="How easy-stack is tested with vanilla-test across Node, Chrome, package entry points, documentation, and GitHub Pages.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Testing · easy-stack">
+    <meta property="og:description" content="Shared vanilla-test contracts, native V8 coverage, package smoke, and CI-gated documentation.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/testing/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Testing · easy-stack">
+    <meta name="twitter:description" content="Shared vanilla-test contracts, native V8 coverage, package smoke, and CI-gated documentation.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/testing/">
+    <link rel="stylesheet" href="../assets/site.css">
+    <title>Testing · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../">Overview</a></li>
+                    <li><a href="../guide/">Guide</a></li>
+                    <li><a href="../api/">API</a></li>
+                    <li><a href="../patterns/">Patterns</a></li>
+                    <li><a href="../browser/">Browser</a></li>
+                    <li><a href="../examples/">Examples</a></li>
+                    <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../migration/">Migration</a></li>
+                    <li><a href="../testing/" aria-current="page">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="testing">
+            <p class="eyebrow">Testing and evidence</p>
+            <h1>One behavioral suite. Two real runtimes.</h1>
+            <p class="lede">vanilla-test runs the same host-neutral stack contract in Node and Chrome, while focused Node suites verify packaging, browser globals, the site, and its server.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="suites">
+                    <h2>Suite boundaries</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Suite</th><th>What it proves</th><th>Runner</th></tr></thead>
+                            <tbody>
+                                <tr><td>Shared core</td><td>LIFO order, synchronous start, pause/resume, active insertion, contents, validation, recovery, async hand-off, and isolation.</td><td>vanilla-test in Node and Chrome</td></tr>
+                                <tr><td>Package contract</td><td>ESM, CommonJS, deep paths, classic globals, ES5 regression, metadata, and zero runtime dependencies.</td><td>vanilla-test in Node</td></tr>
+                                <tr><td>Documentation</td><td>Every route, required section, asset, fragment, README link, workflow, and no-TypeScript contract.</td><td>vanilla-test in Node</td></tr>
+                                <tr><td>Local server</td><td>Content types, page/module/image delivery, containment, malformed paths, and missing files.</td><td>vanilla-test in Node</td></tr>
+                                <tr><td>Packed artifact</td><td>The npm tarball contains only intended files and installs in a clean consumer project.</td><td>CI smoke process</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>On Node 22.12 and newer, every repository test uses <code>vanilla-test@2.1.1</code>. A dependency-free fallback runs all 22 behavior and package contracts on the exact Node 12.22.12 compatibility floor.</p>
+                </section>
+
+                <section id="coverage">
+                    <h2>Native V8 coverage</h2>
+                    <p>The source is measured independently in Node and real Chrome. Every metric must reach 100% for <code>stack.js</code>:</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Metric</th><th>Gate</th><th>Meaning</th></tr></thead>
+                            <tbody>
+                                <tr><td>Statements</td><td>100%</td><td>Every measured operation executes.</td></tr>
+                                <tr><td>Branches</td><td>100%</td><td>Every control-flow outcome executes.</td></tr>
+                                <tr><td>Functions</td><td>100%</td><td>Every measured function executes.</td></tr>
+                                <tr><td>Lines</td><td>100%</td><td>Every executable source line is observed.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="code-block"><pre><code>npm test
+npm run coverage
+npm run coverage:node
+npm run coverage:chrome</code></pre></div>
+                </section>
+
+                <section id="ci">
+                    <h2>CI and publication gates</h2>
+                    <ol>
+                        <li>Test Node 22.12 and 24 across Linux, macOS, and Windows.</li>
+                        <li>Run all dependency-free behavior and package contracts on exact Node 12.22.12.</li>
+                        <li>Collect native coverage in Node 24 and Chrome Stable.</li>
+                        <li>Pack the npm artifact, verify its file list, install it in a clean project, and exercise both import systems.</li>
+                        <li>Validate every documentation route and the contained local server.</li>
+                        <li>Assemble only curated site files and coverage reports.</li>
+                        <li>Deploy GitHub Pages only after every preceding gate passes.</li>
+                    </ol>
+                    <div class="callout">
+                        <strong>Runtime dependency count: zero.</strong>
+                        <p>vanilla-test is pinned as development tooling and is excluded from the published runtime dependency graph.</p>
+                    </div>
+                    <a class="next-page" href="../">
+                        <span>Return to<strong>Documentation overview</strong></span>
+                        <b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Quality gates">
+                <strong>Release gates</strong>
+                <ul>
+                    <li>Shared Node + Chrome behavior</li>
+                    <li>100% native V8 coverage</li>
+                    <li>Node 12.22 compatibility</li>
+                    <li>Clean packed-package install</li>
+                    <li>All documentation links resolve</li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack/actions">CI</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/test/CI.js">Shared suite</a>
+                <a href="https://github.com/RIAEvangelist/vanilla-test">vanilla-test</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="../assets/site.js"></script>
+</body>
+</html>

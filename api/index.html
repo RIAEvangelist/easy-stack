@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="easy-stack API reference for add, next, clear, contents, stack, size, running, autoRun, and stop.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="API reference · easy-stack">
+    <meta property="og:description" content="The complete easy-stack execution and state contract.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/api/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="API reference · easy-stack">
+    <meta name="twitter:description" content="The complete easy-stack execution and state contract.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/api/">
+    <link rel="stylesheet" href="../assets/site.css">
+    <title>API reference · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../">Overview</a></li>
+                    <li><a href="../guide/">Guide</a></li>
+                    <li><a href="../api/" aria-current="page">API</a></li>
+                    <li><a href="../patterns/">Patterns</a></li>
+                    <li><a href="../browser/">Browser</a></li>
+                    <li><a href="../examples/">Examples</a></li>
+                    <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../migration/">Migration</a></li>
+                    <li><a href="../testing/">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="api">
+            <p class="eyebrow">API reference</p>
+            <h1>One class. Four actions. Five state values.</h1>
+            <p class="lede">The surface is intentionally compact. State stays inspectable, and execution advances only through an explicit hand-off.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="methods">
+                    <h2>Methods</h2>
+                    <div class="method-list">
+                        <article class="method">
+                            <h3>new Stack()</h3>
+                            <p>Creates an isolated empty stack with auto-run enabled and stop disabled.</p>
+                            <dl><dt>Returns</dt><dd>A new <code>Stack</code> instance.</dd></dl>
+                        </article>
+                        <article class="method">
+                            <h3>stack.add(...tasks)</h3>
+                            <p>Validates the complete batch, appends it, and starts the newest task when the stack is idle, unblocked, and in auto-run mode.</p>
+                            <dl><dt>Returns</dt><dd>The stack instance for chaining.</dd><dt>Throws</dt><dd><code>TypeError</code> when any item is not a function. Nothing is added on failure.</dd></dl>
+                        </article>
+                        <article class="method">
+                            <h3>stack.next()</h3>
+                            <p>Selects and invokes one newest pending task with the stack bound as <code>this</code>. Empty or stopped stacks become idle.</p>
+                            <dl><dt>Returns</dt><dd><code>undefined</code>; callback return values are ignored.</dd><dt>Throws</dt><dd>The callback's original error, after restoring the idle state.</dd></dl>
+                        </article>
+                        <article class="method">
+                            <h3>stack.clear()</h3>
+                            <p>Replaces the pending callback array without interrupting a callback that is already active.</p>
+                            <dl><dt>Returns</dt><dd>The new empty live array.</dd></dl>
+                        </article>
+                        <article class="method">
+                            <h3>stack.contents([tasks])</h3>
+                            <p>Reads the live callback array. When an argument is provided, validates and installs that array by reference.</p>
+                            <dl><dt>Returns</dt><dd>The current live callback array.</dd><dt>Throws</dt><dd><code>TypeError</code> unless the replacement is an array containing only functions.</dd></dl>
+                        </article>
+                    </div>
+                </section>
+
+                <section id="state">
+                    <h2>State</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Member</th><th>Type</th><th>Default</th><th>Behavior</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>stack.stack</code></td><td>Array</td><td><code>[]</code></td><td>Live pending-task array, bottom first and newest last. Read/write with validation on replacement.</td></tr>
+                                <tr><td><code>stack.size</code></td><td>number</td><td><code>0</code></td><td>Read-only current pending-task count.</td></tr>
+                                <tr><td><code>stack.running</code></td><td>boolean</td><td><code>false</code></td><td>Read-only execution state. It remains true while an active task has not handed off.</td></tr>
+                                <tr><td><code>stack.autoRun</code></td><td>any truthy/falsy</td><td><code>true</code></td><td>When truthy, an idle eligible stack starts as soon as work is added.</td></tr>
+                                <tr><td><code>stack.stop</code></td><td>any truthy/falsy</td><td><code>false</code></td><td>When truthy, <code>next()</code> consumes nothing and sets running false.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout">
+                        <strong>The array is deliberately live.</strong>
+                        <p>Advanced schedulers may inspect or reorder pending tasks directly. Prefer <code>add()</code> and whole-array replacement when you want validation before mutation.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Export shapes</h2>
+                    <div class="code-block"><pre><code><span class="code-keyword">import</span> Stack, { Stack <span class="code-keyword">as</span> NamedStack } <span class="code-keyword">from</span> <span class="code-string">'easy-stack'</span>;
+console.log(Stack === NamedStack); <span class="code-comment">// true</span>
+
+<span class="code-keyword">const</span> RequiredStack = require(<span class="code-string">'easy-stack'</span>);
+console.log(RequiredStack === RequiredStack.Stack); <span class="code-comment">// true</span></code></pre></div>
+                    <a class="next-page" href="../patterns/">
+                        <span>Next page<strong>Execution patterns</strong></span>
+                        <b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="API invariants">
+                <strong>Core invariants</strong>
+                <ul>
+                    <li>Newest pending task is selected first</li>
+                    <li>Batch validation is atomic</li>
+                    <li>Task errors are not swallowed</li>
+                    <li>Instances never share state</li>
+                    <li>Pending contents remain inspectable</li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack">GitHub</a>
+                <a href="https://www.npmjs.com/package/easy-stack">npm</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/stack.js">Source</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="../assets/site.js"></script>
+</body>
+</html>

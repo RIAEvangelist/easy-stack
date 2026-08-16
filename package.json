@@ -1,32 +1,80 @@
 {
   "name": "easy-stack",
-  "version": "1.0.1",
-  "description": "Simple JS stack with auto run for node and browsers",
-  "main": "stack.js",
+  "version": "2.0.0",
+  "description": "Zero-dependency cooperative LIFO execution for Node.js and browsers",
+  "type": "module",
+  "main": "./stack.cjs",
+  "module": "./stack.js",
+  "browser": "./stack.js",
+  "exports": {
+    ".": {
+      "import": "./stack.js",
+      "require": "./stack.cjs",
+      "default": "./stack.js"
+    },
+    "./stack.js": {
+      "import": "./stack.js",
+      "require": "./stack.cjs",
+      "default": "./stack.js"
+    },
+    "./stack-vanilla.js": "./stack-vanilla.js",
+    "./es5.js": {
+      "import": "./stack.js",
+      "require": "./stack.cjs",
+      "default": "./es5.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "stack.js",
+    "stack.cjs",
+    "stack-vanilla.js",
+    "es5.js",
+    "CHANGELOG.md",
+    "MIGRATION.md",
+    "licence"
+  ],
+  "sideEffects": [
+    "./stack-vanilla.js",
+    "./es5.js"
+  ],
+  "engines": {
+    "node": ">=12.22.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./scripts/test.js",
+    "test:core": "node ./scripts/test.js core",
+    "test:package": "node ./scripts/test.js package",
+    "test:server": "node ./scripts/test.js server",
+    "test:docs": "node ./scripts/test.js docs",
+    "test:legacy": "node ./scripts/test.js legacy",
+    "coverage": "vanilla-test coverage",
+    "coverage:node": "vanilla-test coverage node",
+    "coverage:chrome": "vanilla-test coverage chrome",
+    "check": "npm test && npm run coverage:node",
+    "start": "node ./scripts/serve.js"
   },
-  "engines" : {
-      "node" : ">=6.0.0"
-  },
+  "keywords": [
+    "stack",
+    "lifo",
+    "scheduler",
+    "priority",
+    "javascript",
+    "node",
+    "browser",
+    "zero-dependency"
+  ],
+  "author": "Brandon Nozaki Miller",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RIAEvangelist/easy-stack.git"
   },
-  "keywords": [
-    "stack",
-    "node",
-    "js",
-    "auto",
-    "run",
-    "execute",
-    "browser",
-    "react"
-  ],
-  "author": "Brandon Nozaki Miller",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/RIAEvangelist/easy-stack/issues"
   },
-  "homepage": "https://github.com/RIAEvangelist/easy-stack#readme"
+  "homepage": "https://riaevangelist.github.io/easy-stack/",
+  "devDependencies": {
+    "vanilla-test": "2.1.1"
+  }
 }

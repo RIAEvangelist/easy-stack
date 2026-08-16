@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Compare LIFO stacks with FIFO queues and choose the right execution order for a JavaScript workload.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Stack vs queue · easy-stack">
+    <meta property="og:description" content="Choose newest-first LIFO or oldest-first FIFO for your JavaScript workload.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/queue/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Stack vs queue · easy-stack">
+    <meta name="twitter:description" content="Choose newest-first LIFO or oldest-first FIFO for your JavaScript workload.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/queue/">
+    <link rel="stylesheet" href="../assets/site.css">
+    <title>Stack vs queue · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../">Overview</a></li>
+                    <li><a href="../guide/">Guide</a></li>
+                    <li><a href="../api/">API</a></li>
+                    <li><a href="../patterns/">Patterns</a></li>
+                    <li><a href="../browser/">Browser</a></li>
+                    <li><a href="../examples/">Examples</a></li>
+                    <li><a href="../queue/" aria-current="page">Stack vs queue</a></li>
+                    <li><a href="../migration/">Migration</a></li>
+                    <li><a href="../testing/">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="queue">
+            <p class="eyebrow">Stack vs queue</p>
+            <h1>The order is the product decision.</h1>
+            <p class="lede">A stack favors recency. A queue favors arrival order. Neither is universally better; each expresses a different promise to the work.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="comparison">
+                    <h2>LIFO and FIFO compared</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Question</th><th>Stack · LIFO</th><th>Queue · FIFO</th></tr></thead>
+                            <tbody>
+                                <tr><td>What runs next?</td><td>The newest pending item.</td><td>The oldest pending item.</td></tr>
+                                <tr><td>What gets priority?</td><td>Recent context and interruption.</td><td>Arrival order and fairness.</td></tr>
+                                <tr><td>Natural metaphor</td><td>Papers placed on top of a desk pile.</td><td>People joining the back of a line.</td></tr>
+                                <tr><td>Good fit</td><td>Refreshes, overrides, nested work, urgent state.</td><td>Logs, jobs, transactions, ordered ingestion.</td></tr>
+                                <tr><td>Starvation risk</td><td>Older work can wait while new work keeps arriving.</td><td>Urgent new work waits behind the backlog.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="choice">
+                    <h2>Choose a stack when recency is meaningful</h2>
+                    <ul>
+                        <li>A fresh UI state makes an older render request less useful.</li>
+                        <li>A task discovers nested prerequisite work that should happen immediately.</li>
+                        <li>A reconnection or resource-open event should release the newest pending request first.</li>
+                        <li>Users can supersede older intent with a newer action.</li>
+                    </ul>
+                    <p>Choose a queue when every item deserves arrival-order processing or when older work must not be starved.</p>
+                </section>
+
+                <section>
+                    <h2>Reason from the visible array</h2>
+                    <p>easy-stack exposes pending tasks bottom first and newest last. That matches JavaScript's ordinary <code>push()</code> and <code>pop()</code> model:</p>
+                    <div class="code-block"><pre><code>stack.autoRun = <span class="code-keyword">false</span>;
+stack.add(first, second, newest);
+
+console.log(stack.stack);
+<span class="code-comment">// [first, second, newest]</span>
+
+stack.next();
+<span class="code-comment">// newest executes</span></code></pre></div>
+                    <div class="callout">
+                        <strong>Protect old work when it matters.</strong>
+                        <p>If uninterrupted arrival order is a requirement, use a queue. Do not simulate FIFO by constantly reversing easy-stack's live array.</p>
+                    </div>
+                    <a class="next-page" href="../migration/">
+                        <span>Next page<strong>Migrate from v1</strong></span>
+                        <b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Selection summary">
+                <strong>Fast choice</strong>
+                <ul>
+                    <li>Newest intent wins: stack</li>
+                    <li>Oldest arrival wins: queue</li>
+                    <li>Nested work jumps ahead: stack</li>
+                    <li>Every item waits fairly: queue</li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack">GitHub</a>
+                <a href="https://www.npmjs.com/package/easy-stack">npm</a>
+                <a href="https://github.com/RIAEvangelist/js-queue">js-queue</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Practical easy-stack patterns for priority insertion, pause gates, asynchronous hand-offs, and error recovery.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Execution patterns · easy-stack">
+    <meta property="og:description" content="Use easy-stack for newest-first priority, gates, asynchronous hand-offs, and recoverable errors.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/patterns/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Execution patterns · easy-stack">
+    <meta name="twitter:description" content="Use easy-stack for newest-first priority, gates, asynchronous hand-offs, and recoverable errors.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/patterns/">
+    <link rel="stylesheet" href="../assets/site.css">
+    <title>Execution patterns · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../">Overview</a></li>
+                    <li><a href="../guide/">Guide</a></li>
+                    <li><a href="../api/">API</a></li>
+                    <li><a href="../patterns/" aria-current="page">Patterns</a></li>
+                    <li><a href="../browser/">Browser</a></li>
+                    <li><a href="../examples/">Examples</a></li>
+                    <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../migration/">Migration</a></li>
+                    <li><a href="../testing/">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="patterns">
+            <p class="eyebrow">Execution patterns</p>
+            <h1>Make interruption a feature.</h1>
+            <p class="lede">New work can move ahead of older work without rebuilding a schedule. The active task still owns the exact hand-off moment.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="priority">
+                    <h2>Insert urgent work while active</h2>
+                    <p>Anything added during an active task lands above the remaining work. Call <code>next()</code> after insertion and the newest urgent task runs first.</p>
+                    <div class="code-block"><pre><code><span class="code-keyword">const</span> stack = <span class="code-keyword">new</span> Stack();
+
+stack.add(
+    <span class="code-keyword">function</span> ordinary() {
+        console.log(<span class="code-string">'ordinary'</span>);
+        <span class="code-keyword">this</span>.next();
+    },
+    <span class="code-keyword">function</span> active() {
+        console.log(<span class="code-string">'active'</span>);
+        <span class="code-keyword">this</span>.add(<span class="code-keyword">function</span> urgent() {
+            console.log(<span class="code-string">'urgent'</span>);
+            <span class="code-keyword">this</span>.next();
+        });
+        <span class="code-keyword">this</span>.next();
+    }
+);
+
+<span class="code-comment">// active → urgent → ordinary</span></code></pre></div>
+                </section>
+
+                <section id="gates">
+                    <h2>Gate work on readiness</h2>
+                    <p>Use <code>stop</code> when work may be queued before a resource is ready. Clearing the gate does not start work implicitly, so the readiness event stays the single explicit resume point.</p>
+                    <div class="code-block"><pre><code><span class="code-keyword">const</span> pendingWrites = <span class="code-keyword">new</span> Stack();
+pendingWrites.stop = <span class="code-keyword">true</span>;
+
+pendingWrites.add(sendNewestDraft, sendOlderDraft);
+
+connection.addEventListener(<span class="code-string">'open'</span>, () =&gt; {
+    pendingWrites.stop = <span class="code-keyword">false</span>;
+    pendingWrites.next();
+});</code></pre></div>
+                    <p>A task can also set <code>this.stop = true</code> before calling <code>this.next()</code>. That hand-off consumes nothing, makes the runner idle, and preserves lower work.</p>
+                </section>
+
+                <section>
+                    <h2>Hand off after asynchronous work</h2>
+                    <p>easy-stack does not inspect promises. Keep the flow explicit by calling <code>next()</code> in the success path that should release the following task.</p>
+                    <div class="code-block"><pre><code>stack.add(<span class="code-keyword">function</span> requestNewest() {
+    fetch(<span class="code-string">'/resource'</span>)
+        .then(handleResponse)
+        .then(() =&gt; <span class="code-keyword">this</span>.next())
+        .catch((error) =&gt; {
+            <span class="code-keyword">this</span>.stop = <span class="code-keyword">true</span>;
+            report(error);
+        });
+});</code></pre></div>
+                    <div class="callout">
+                        <strong>A returned promise is not a hand-off.</strong>
+                        <p>The runner deliberately ignores callback return values. Call <code>next()</code> only after the asynchronous condition that should release lower work.</p>
+                    </div>
+                </section>
+
+                <section id="errors">
+                    <h2>Recover after synchronous errors</h2>
+                    <p>A thrown task error is rethrown to the caller and <code>running</code> returns to false. Pending lower work stays available for a policy decision.</p>
+                    <div class="code-block"><pre><code><span class="code-keyword">try</span> {
+    stack.next();
+} <span class="code-keyword">catch</span> (error) {
+    log(error);
+
+    <span class="code-comment">// Decide deliberately whether to continue.</span>
+    <span class="code-keyword">if</span> (canRecover(error)) {
+        stack.next();
+    } <span class="code-keyword">else</span> {
+        stack.clear();
+    }
+}</code></pre></div>
+                    <a class="next-page" href="../browser/">
+                        <span>Next page<strong>Browser use</strong></span>
+                        <b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Pattern checklist">
+                <strong>Choose easy-stack when</strong>
+                <ul>
+                    <li>New work should outrank old work</li>
+                    <li>The active task knows when to continue</li>
+                    <li>Pause and resume points must be explicit</li>
+                    <li>Pending work must stay inspectable</li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack">GitHub</a>
+                <a href="https://www.npmjs.com/package/easy-stack">npm</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/tree/main/example">Examples</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="../assets/site.js"></script>
+</body>
+</html>

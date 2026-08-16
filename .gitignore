@@ -1,0 +1,5 @@
+node_modules/
+coverage/
+_site/
+*.tgz
+npm-debug.log*

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Use easy-stack in browsers through native ES modules, a modern classic script, or the ES5 compatibility build.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Browser use · easy-stack">
+    <meta property="og:description" content="Native modules, classic scripts, and ES5 compatibility for easy-stack in browsers.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/browser/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Browser use · easy-stack">
+    <meta name="twitter:description" content="Native modules, classic scripts, and ES5 compatibility for easy-stack in browsers.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/browser/">
+    <link rel="stylesheet" href="../assets/site.css">
+    <title>Browser use · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../">Overview</a></li>
+                    <li><a href="../guide/">Guide</a></li>
+                    <li><a href="../api/">API</a></li>
+                    <li><a href="../patterns/">Patterns</a></li>
+                    <li><a href="../browser/" aria-current="page">Browser</a></li>
+                    <li><a href="../examples/">Examples</a></li>
+                    <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../migration/">Migration</a></li>
+                    <li><a href="../testing/">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="browser">
+            <p class="eyebrow">Browser use</p>
+            <h1>Native when possible. Global when needed.</h1>
+            <p class="lede">Choose one of three zero-build browser entries. Every entry preserves the same cooperative LIFO behavior.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="esm">
+                    <h2>Native ES module</h2>
+                    <p>Use <code>stack.js</code> directly from a local installation, your own server, or an npm-aware CDN. The browser module has no Node-specific imports.</p>
+                    <div class="code-block"><pre><code>&lt;script type=<span class="code-string">"module"</span>&gt;
+    <span class="code-keyword">import</span> Stack <span class="code-keyword">from</span> <span class="code-string">"./node_modules/easy-stack/stack.js"</span>;
+
+    <span class="code-keyword">const</span> stack = <span class="code-keyword">new</span> Stack();
+    stack.add(<span class="code-keyword">function</span> renderNewest() {
+        render();
+        <span class="code-keyword">this</span>.next();
+    });
+&lt;/script&gt;</code></pre></div>
+                    <p>In application source managed by a bundler or import map, use the package specifier <code>easy-stack</code>.</p>
+                </section>
+
+                <section id="classic">
+                    <h2>Modern classic script</h2>
+                    <p><code>stack-vanilla.js</code> installs <code>globalThis.Stack</code> for a classic script environment. It uses modern JavaScript primitives without module syntax.</p>
+                    <div class="code-block"><pre><code>&lt;script src=<span class="code-string">"./node_modules/easy-stack/stack-vanilla.js"</span>&gt;&lt;/script&gt;
+&lt;script&gt;
+    var stack = new Stack();
+    stack.add(function newest() {
+        console.log(<span class="code-string">'newest'</span>);
+        this.next();
+    });
+&lt;/script&gt;</code></pre></div>
+                    <p>Use this path when an existing page expects a global constructor but still targets current browsers.</p>
+                </section>
+
+                <section>
+                    <h2>ES5 compatibility script</h2>
+                    <p><code>es5.js</code> uses ES5-era syntax and a numeric argument loop. It creates the same global <code>Stack</code> without the inherited-property enqueue bug in v1.</p>
+                    <div class="code-block"><pre><code>&lt;script src=<span class="code-string">"./node_modules/easy-stack/es5.js"</span>&gt;&lt;/script&gt;</code></pre></div>
+                    <div class="callout">
+                        <strong>ES5 syntax is not an IE8 guarantee.</strong>
+                        <p>The compatibility build relies on ES5 features such as <code>Object.defineProperties</code> and <code>Array.isArray</code>. Test the exact browsers your application supports.</p>
+                    </div>
+                </section>
+
+                <section id="serve">
+                    <h2>Serve over HTTP</h2>
+                    <p>Native modules need an HTTP origin and a JavaScript content type. Do not treat a <code>file:</code> URL as equivalent browser verification.</p>
+                    <div class="code-block"><pre><code><span class="code-comment"># From this repository</span>
+npm start
+
+<span class="code-comment"># Open the printed local URL</span></code></pre></div>
+                    <p>The repository server confines paths to the project root, emits explicit content types, rejects traversal, and powers the same examples deployed through GitHub Pages.</p>
+                    <a class="next-page" href="../examples/">
+                        <span>Next page<strong>Examples and live demo</strong></span>
+                        <b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Browser entry guide">
+                <strong>Choose an entry</strong>
+                <ul>
+                    <li><code>stack.js</code>: native ESM</li>
+                    <li><code>stack-vanilla.js</code>: modern global</li>
+                    <li><code>es5.js</code>: ES5-syntax global</li>
+                    <li>All three: zero runtime dependencies</li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack">GitHub</a>
+                <a href="https://www.npmjs.com/package/easy-stack">npm</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/stack-vanilla.js">Browser source</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="../assets/site.js"></script>
+</body>
+</html>

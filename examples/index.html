@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Run easy-stack in the browser and adapt recipes for manual batches, pause gates, and newest-first work.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Examples · easy-stack">
+    <meta property="og:description" content="A live LIFO demo and practical easy-stack recipes.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/examples/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Examples · easy-stack">
+    <meta name="twitter:description" content="A live LIFO demo and practical easy-stack recipes.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/examples/">
+    <link rel="stylesheet" href="../assets/site.css">
+    <title>Examples · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../">Overview</a></li>
+                    <li><a href="../guide/">Guide</a></li>
+                    <li><a href="../api/">API</a></li>
+                    <li><a href="../patterns/">Patterns</a></li>
+                    <li><a href="../browser/">Browser</a></li>
+                    <li><a href="../examples/" aria-current="page">Examples</a></li>
+                    <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../migration/">Migration</a></li>
+                    <li><a href="../testing/">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="examples">
+            <p class="eyebrow">Examples</p>
+            <h1>See newest-first execution happen.</h1>
+            <p class="lede">The live example imports the deployed package source directly. The recipes below isolate one behavior at a time.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="live-demo">
+                    <h2>Live browser demo</h2>
+                    <p>The demo adds four labels in reading order, then drains the stack. The output should reverse that order and end with zero pending tasks.</p>
+                    <div class="demo-panel">
+                        <div class="demo-panel__controls">
+                            <button class="button" type="button" data-demo-run>Run LIFO demo</button>
+                            <span class="status">Native module ready</span>
+                        </div>
+                        <output data-demo-output aria-live="polite">Select “Run LIFO demo” to execute the deployed stack.</output>
+                    </div>
+                </section>
+
+                <section id="recipes">
+                    <h2>Manual batch</h2>
+                    <p>Disable auto-run to load a complete batch before selecting the newest item.</p>
+                    <div class="code-block"><pre><code><span class="code-keyword">const</span> stack = <span class="code-keyword">new</span> Stack();
+stack.autoRun = <span class="code-keyword">false</span>;
+stack.add(saveDraft, recalculate, renderPreview);
+
+console.log(stack.size); <span class="code-comment">// 3</span>
+stack.next(); <span class="code-comment">// renderPreview begins first</span></code></pre></div>
+                </section>
+
+                <section>
+                    <h2>Clear stale lower work</h2>
+                    <p>An active task may decide that everything below it is obsolete. <code>clear()</code> replaces pending contents without interrupting that active task.</p>
+                    <div class="code-block"><pre><code>stack.add(
+    <span class="code-keyword">function</span> staleRequest() {
+        sendOldState();
+        <span class="code-keyword">this</span>.next();
+    },
+    <span class="code-keyword">function</span> authoritativeRefresh() {
+        <span class="code-keyword">this</span>.clear();
+        replaceEverything();
+        <span class="code-keyword">this</span>.next();
+    }
+);</code></pre></div>
+                </section>
+
+                <section>
+                    <h2>Pause until an event</h2>
+                    <p>Leave the runner active while a browser event is outstanding, then hand off from the event callback.</p>
+                    <div class="code-block"><pre><code>stack.add(<span class="code-keyword">function</span> waitForAnimation() {
+    element.addEventListener(<span class="code-string">'transitionend'</span>, () =&gt; {
+        <span class="code-keyword">this</span>.next();
+    }, { once: <span class="code-keyword">true</span> });
+
+    element.classList.add(<span class="code-string">'visible'</span>);
+});</code></pre></div>
+                    <a class="next-page" href="../queue/">
+                        <span>Next page<strong>Stack vs queue</strong></span>
+                        <b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Example rules">
+                <strong>Recipe rules</strong>
+                <ul>
+                    <li>Use regular functions for <code>this</code></li>
+                    <li>Call <code>next()</code> exactly at hand-off</li>
+                    <li>Expect synchronous initial execution</li>
+                    <li>Keep promise policy in application code</li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack">GitHub</a>
+                <a href="https://www.npmjs.com/package/easy-stack">npm</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/example/basic.js">Example source</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="../assets/site.js"></script>
+</body>
+</html>
