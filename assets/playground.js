@@ -27,14 +27,88 @@ const presets=Object.freeze({
 function createPlayground(){
     let labels;
     let lastAction;
+    let operations;
     let stack;
     let trace;
 
     function createFreshStack(){
         labels=new WeakMap();
+        operations=[];
         stack=new Stack();
         trace=[];
         lastAction='Created a new stack with constructor defaults.';
+    }
+
+    function stringLiteral(value){
+        return JSON.stringify(value)
+            .replace(/</g,'\\u003c')
+            .replace(/\u2028/g,'\\u2028')
+            .replace(/\u2029/g,'\\u2029');
+    }
+
+    function operationSource(operation){
+        switch(operation.type){
+            case 'add':
+                return `stack.add(makeTask(${stringLiteral(operation.label)}, ${operation.autoHandoff}));`;
+            case 'autoRun':
+                return `stack.autoRun=${operation.value};`;
+            case 'clear':
+                return 'stack.clear();';
+            case 'next':
+                return 'stack.next();';
+            case 'stop':
+                return `stack.stop=${operation.value};`;
+            default:
+                throw new RangeError(`Unknown playground operation: ${operation.type}.`);
+        }
+    }
+
+    function renderSource(){
+        const replay=operations.map(operationSource).join('\n');
+
+        return `import Stack from 'easy-stack';
+
+let labels;
+let stack;
+let trace;
+
+function resetPlayground(){
+    labels=new WeakMap();
+    stack=new Stack();
+    trace=[];
+}
+
+function makeTask(label,autoHandoff){
+    const task=function playgroundTask(){
+        trace.push(label);
+
+        if(autoHandoff){
+            this.next();
+        }
+    };
+
+    labels.set(task,label);
+    return task;
+}
+
+function inspect(){
+    return {
+        autoRun:Boolean(stack.autoRun),
+        pending:[...stack.stack]
+            .reverse()
+            .map(task=>labels.get(task) || task.name || 'anonymous task'),
+        running:stack.running,
+        size:stack.size,
+        stop:Boolean(stack.stop),
+        trace:[...trace]
+    };
+}
+
+resetPlayground();
+${replay}
+
+console.log(JSON.stringify(inspect(),null,2));
+`;
     }
 
     function makeTask(label,autoHandoff){
@@ -64,6 +138,7 @@ function createPlayground(){
             pending:Object.freeze(pending),
             running:stack.running,
             size:stack.size,
+            source:renderSource(),
             stop:Boolean(stack.stop),
             trace:Object.freeze([...trace])
         });
@@ -78,10 +153,13 @@ function createPlayground(){
 
         createFreshStack();
         stack.autoRun=preset.autoRun;
+        operations.push({type:'autoRun',value:preset.autoRun});
         stack.stop=preset.stop;
+        operations.push({type:'stop',value:preset.stop});
 
         for(const label of preset.tasks){
             stack.add(makeTask(label,preset.autoHandoff));
+            operations.push({autoHandoff:preset.autoHandoff,label,type:'add'});
         }
 
         lastAction=`Loaded “${preset.label}” with ${stack.size} pending tasks.`;
@@ -103,6 +181,7 @@ function createPlayground(){
 
         const traceLength=trace.length;
         stack.add(makeTask(normalized,Boolean(autoHandoff)));
+        operations.push({autoHandoff:Boolean(autoHandoff),label:normalized,type:'add'});
 
         if(trace.length === traceLength){
             lastAction=`Added “${normalized}” to the top of the stack.`;
@@ -115,6 +194,7 @@ function createPlayground(){
         const sizeBefore=stack.size;
         const traceLength=trace.length;
         stack.next();
+        operations.push({type:'next'});
 
         if(trace.length === traceLength){
             if(stack.stop){
@@ -131,6 +211,7 @@ function createPlayground(){
 
     function setAutoRun(value){
         stack.autoRun=Boolean(value);
+        operations.push({type:'autoRun',value:stack.autoRun});
         lastAction=stack.size === 0
             ? `Set autoRun to ${stack.autoRun}. No work is pending.`
             : `Set autoRun to ${stack.autoRun}. Existing work still waits for next().`;
@@ -139,6 +220,7 @@ function createPlayground(){
 
     function setStop(value){
         stack.stop=Boolean(value);
+        operations.push({type:'stop',value:stack.stop});
         if(stack.size === 0){
             lastAction=`Set stop to ${stack.stop}. No work is pending.`;
         }else{
@@ -152,6 +234,7 @@ function createPlayground(){
     function clear(){
         const removed=stack.size;
         stack.clear();
+        operations.push({type:'clear'});
         lastAction=`Cleared ${removed} pending ${removed === 1 ? 'task' : 'tasks'} without changing state flags.`;
         return snapshot();
     }
@@ -190,6 +273,41 @@ function bootPlayground(root){
     const running=root.querySelector('[data-playground-running]');
     const autoRunValue=root.querySelector('[data-playground-auto-run-value]');
     const stopValue=root.querySelector('[data-playground-stop-value]');
+    const codeFrame=root.querySelector('[data-playground-code-frame]');
+    const runtimeAssets=codeFrame
+        ? Promise.all([
+            fetch(new URL('../stack.js',import.meta.url)),
+            fetch(new URL('../playground/worker.js',import.meta.url))
+        ]).then(async responses=>{
+            for(const response of responses){
+                if(!response.ok){
+                    throw new Error(`Playground runtime request failed with ${response.status}.`);
+                }
+            }
+
+            return {
+                stackModuleSource:await responses[0].text(),
+                workerModuleSource:await responses[1].text()
+            };
+        })
+        : null;
+    let renderedSource='';
+
+    function synchronizeSource(){
+        if(!codeFrame || !codeFrame.contentWindow || !runtimeAssets){
+            return;
+        }
+
+        runtimeAssets.then(assets=>{
+            codeFrame.contentWindow.postMessage({
+                ...assets,
+                source:renderedSource,
+                type:'easy-stack:load'
+            },'*');
+        }).catch(error=>{
+            status.textContent=`${error.message} The stack controls remain available.`;
+        });
+    }
 
     function replaceList(list,items,emptyMessage,{topLabel=false}={}){
         const children=[];
@@ -229,8 +347,14 @@ function bootPlayground(root){
         releaseButton.disabled=!state.stop;
         clearButton.disabled=state.size === 0;
         status.textContent=`${state.lastAction} ${state.size} pending.`;
+        renderedSource=state.source;
+        synchronizeSource();
         replaceList(pendingList,state.pending,'No pending tasks.',{topLabel:true});
         replaceList(traceList,state.trace,'No task has run yet.');
+    }
+
+    if(codeFrame){
+        codeFrame.addEventListener('load',synchronizeSource);
     }
 
     loadButton.addEventListener('click',()=>render(controller.load(preset.value)));

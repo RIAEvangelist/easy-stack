@@ -3,13 +3,13 @@ import {fileURLToPath} from 'node:url';
 
 const selection=process.argv[2] || 'all';
 const suites={
-    all:['test/node.js','test/playground.js','test/package.js','test/server.js','test/docs.js'],
-    core:['test/node.js'],
-    playground:['test/playground.js'],
-    package:['test/package.js'],
-    server:['test/server.js'],
-    docs:['test/docs.js'],
-    legacy:['test/node.js','test/package.js']
+    all:['test/unit.js','test/functional.js','test/integration.js','test/regression.js'],
+    browser:['test/regression-browser.js'],
+    functional:['test/functional.js'],
+    integration:['test/integration.js'],
+    legacy:['test/compatibility.js'],
+    regression:['test/regression.js'],
+    unit:['test/unit.js']
 };
 
 if(!Object.prototype.hasOwnProperty.call(suites,selection)){

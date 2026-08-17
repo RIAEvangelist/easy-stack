@@ -43,8 +43,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run repository contracts
-        run: npm test
+      - name: Run Unit suite
+        run: npm run test:unit
+
+      - name: Run Functional suite
+        run: npm run test:functional
+
+      - name: Run Integration suite
+        run: npm run test:integration
+
+      - name: Run Regression suite
+        run: npm run test:regression
 
       - name: Preview the packed package
         run: npm pack --dry-run
@@ -95,11 +104,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify the unique test catalog
+        run: node ./scripts/test-catalog.js --github-summary
+
       - name: Run Node and Chrome coverage
         env:
           CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
           VANILLA_TEST_CHROME_NO_SANDBOX: '1'
         run: npm run coverage -- --chrome-path "$CHROME_PATH"
+
+      - name: Run real-Chrome Regression cases
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          VANILLA_TEST_CHROME_NO_SANDBOX: '1'
+        run: npm run test:regression:chrome
 
       - name: Upload coverage evidence
         if: always()

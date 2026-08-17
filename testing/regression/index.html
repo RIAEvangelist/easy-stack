@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The 16 Regression cases in easy-stack's non-duplicated vanilla-test catalog.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Regression tests · easy-stack">
+    <meta property="og:description" content="Sixteen named guards for recovery, compatibility, safety, sandboxing, and real Worker lifetime.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/testing/regression/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Regression tests · easy-stack">
+    <meta name="twitter:description" content="Sixteen named guards for recovery, compatibility, safety, sandboxing, and real Worker lifetime.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/testing/regression/">
+    <link rel="stylesheet" href="../../assets/site.css">
+    <title>Regression tests · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../../">Overview</a></li>
+                    <li><a href="../../guide/">Guide</a></li>
+                    <li><a href="../../api/">API</a></li>
+                    <li><a href="../../patterns/">Patterns</a></li>
+                    <li><a href="../../browser/">Browser</a></li>
+                    <li><a href="../../examples/">Examples</a></li>
+                    <li><a href="../../playground/">Playground</a></li>
+                    <li><a href="../../queue/">Stack vs queue</a></li>
+                    <li><a href="../../migration/">Migration</a></li>
+                    <li><a href="../" aria-current="page">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="suite">
+            <p class="eyebrow">Regression suite · R001–R016</p>
+            <h1>Sixteen defects that stay fixed.</h1>
+            <p class="lede">Regression cases are reserved for specific failure modes: recovery, ES5 quirks, injection, path containment, sandbox policy, and real-browser Worker failures.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="catalog">
+                    <h2>Unique case catalog</h2>
+                    <ol class="case-catalog">
+                        <li data-case-id="R001" data-contract="regression.live-array.invalid"><code>R001</code> invalid live-array tasks throw and return the runner to idle</li>
+                        <li data-case-id="R002" data-contract="regression.callback.recovery"><code>R002</code> thrown callbacks idle the runner and preserve lower work</li>
+                        <li data-case-id="R003" data-contract="regression.es5.inherited-arguments"><code>R003</code> ES5 add ignores inherited enumerable argument properties</li>
+                        <li data-case-id="R004" data-contract="regression.es5.without-new"><code>R004</code> ES5 Stack remains safe when called without <code>new</code></li>
+                        <li data-case-id="R005" data-contract="regression.playground.blank-label"><code>R005</code> blank custom labels are rejected without changing source</li>
+                        <li data-case-id="R006" data-contract="regression.playground.long-label"><code>R006</code> overlong custom labels are rejected without changing source</li>
+                        <li data-case-id="R007" data-contract="regression.playground.unknown-preset"><code>R007</code> unknown presets are rejected without changing source</li>
+                        <li data-case-id="R008" data-contract="regression.playground.source-injection"><code>R008</code> hostile labels remain inert escaped string data</li>
+                        <li data-case-id="R009" data-contract="regression.server.resolve-traversal"><code>R009</code> resolver blocks encoded traversal outside the site root</li>
+                        <li data-case-id="R010" data-contract="regression.server.http-traversal"><code>R010</code> HTTP traversal returns 403</li>
+                        <li data-case-id="R011" data-contract="regression.server.malformed-uri"><code>R011</code> malformed encoded paths return 400</li>
+                        <li data-case-id="R012" data-contract="regression.server.missing-file"><code>R012</code> missing files return 404</li>
+                        <li data-case-id="R013" data-contract="regression.site.remote-assets"><code>R013</code> site has no remote runtime asset or avatar dependency</li>
+                        <li data-case-id="R014" data-contract="regression.playground.sandbox"><code>R014</code> editor runner remains opaque, CSP-bound, and free of text-evaluation shortcuts</li>
+                        <li data-case-id="R015" data-contract="playground.worker.opaque-classic-bootstrap"><code>R015</code> opaque editor sandbox runs synchronized LIFO source in a classic Worker</li>
+                        <li data-case-id="R016" data-contract="playground.worker.completed-module-hard-lifetime"><code>R016</code> completed async module is terminated at the hard Worker lifetime</li>
+                    </ol>
+                </section>
+
+                <section id="run">
+                    <h2>Run this suite</h2>
+                    <div class="code-block"><pre><code>npm run test:regression
+npm run test:regression:chrome</code></pre></div>
+                    <p>R015 and R016 run only in installed Chrome. They use the production opaque iframe and classic Worker, including the hard four-second lifetime after module completion.</p>
+                    <a class="next-page" href="../">
+                        <span>Return to<strong>Testing overview</strong></span><b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Testing suites">
+                <strong>Suite catalogs</strong>
+                <ul>
+                    <li><a href="../unit/">Unit · 16</a></li>
+                    <li><a href="../functional/">Functional · 24</a></li>
+                    <li><a href="../integration/">Integration · 28</a></li>
+                    <li><a href="./" aria-current="page">Regression · 16</a></li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner"><p>16 Regression cases · one definition each</p><nav aria-label="Project links"><a href="../">Testing overview</a><a href="https://github.com/RIAEvangelist/easy-stack/tree/main/test/cases">Source catalog</a></nav></div>
+    </footer>
+    <script type="module" src="../../assets/site.js"></script>
+</body>
+</html>

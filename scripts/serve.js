@@ -52,6 +52,7 @@ function handleRequest(request,response){
     }
 
     response.writeHead(200,{
+        'Access-Control-Allow-Origin':'*',
         'Cache-Control':'no-store',
         'Content-Type':types.get(path.extname(requested).toLowerCase()) || 'application/octet-stream'
     });

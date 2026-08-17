@@ -6,7 +6,9 @@ All notable changes to easy-stack are documented here.
 
 - Correct the documentation hero image so responsive sizing preserves its intrinsic aspect ratio.
 - Add a dedicated, dependency-free browser Playground backed by the real stack module and vanilla-test controller contracts.
-- Expand the curated GitHub Pages documentation from nine focused pages to ten.
+- Pair every Playground activity with synchronized, editable JavaScript, isolated Worker execution, and a live console.
+- Reorganize tests into 84 uniquely identified Unit, Functional, Integration, and Regression cases without duplicate definitions.
+- Expand the curated GitHub Pages documentation from nine pages to ten primary routes plus four focused test-catalog pages.
 
 ## 2.0.0 — 2026-08-16
 

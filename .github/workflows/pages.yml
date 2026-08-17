@@ -53,6 +53,12 @@ jobs:
           VANILLA_TEST_CHROME_NO_SANDBOX: '1'
         run: npm run coverage -- --chrome-path "$CHROME_PATH"
 
+      - name: Verify real-Chrome Regression cases
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          VANILLA_TEST_CHROME_NO_SANDBOX: '1'
+        run: npm run test:regression:chrome
+
       - name: Verify package contents
         run: npm pack --dry-run
 
@@ -69,6 +75,10 @@ jobs:
             _site/queue \
             _site/migration \
             _site/testing \
+            _site/testing/unit \
+            _site/testing/functional \
+            _site/testing/integration \
+            _site/testing/regression \
             _site/assets \
             _site/reports
 
@@ -78,10 +88,21 @@ jobs:
           cp patterns/index.html _site/patterns/
           cp browser/index.html _site/browser/
           cp examples/index.html _site/examples/
-          cp playground/index.html _site/playground/
+          cp \
+            playground/index.html \
+            playground/frame.html \
+            playground/playground.css \
+            playground/runner.js \
+            playground/runtime.js \
+            playground/worker.js \
+            _site/playground/
           cp queue/index.html _site/queue/
           cp migration/index.html _site/migration/
           cp testing/index.html _site/testing/
+          cp testing/unit/index.html _site/testing/unit/
+          cp testing/functional/index.html _site/testing/functional/
+          cp testing/integration/index.html _site/testing/integration/
+          cp testing/regression/index.html _site/testing/regression/
           cp assets/site.css assets/site.js assets/playground.js assets/easy-stack-header.png assets/og.png _site/assets/
           cp stack.js stack-vanilla.js es5.js CHANGELOG.md MIGRATION.md licence _site/
           cp --recursive coverage/node _site/reports/node
@@ -96,9 +117,18 @@ jobs:
             _site/browser/index.html \
             _site/examples/index.html \
             _site/playground/index.html \
+            _site/playground/frame.html \
+            _site/playground/playground.css \
+            _site/playground/runner.js \
+            _site/playground/runtime.js \
+            _site/playground/worker.js \
             _site/queue/index.html \
             _site/migration/index.html \
             _site/testing/index.html \
+            _site/testing/unit/index.html \
+            _site/testing/functional/index.html \
+            _site/testing/integration/index.html \
+            _site/testing/regression/index.html \
             _site/assets/site.css \
             _site/assets/site.js \
             _site/assets/playground.js \

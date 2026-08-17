@@ -3,17 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Explore easy-stack with a deterministic browser playground for LIFO order, manual hand-offs, stop gates, clear, and reset.">
+    <meta name="description" content="Explore easy-stack with synchronized stack controls, an editable native-module source editor, and live browser output.">
     <meta name="color-scheme" content="dark">
     <meta property="og:title" content="Playground · easy-stack">
-    <meta property="og:description" content="Operate a real easy-stack instance and inspect every synchronous state transition.">
+    <meta property="og:description" content="Operate a real easy-stack instance, edit its synchronized source, and run the native module in your browser.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/playground/">
     <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
     <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Playground · easy-stack">
-    <meta name="twitter:description" content="Operate a real easy-stack instance and inspect every synchronous state transition.">
+    <meta name="twitter:description" content="Operate a real easy-stack instance, edit its synchronized source, and run the native module in your browser.">
     <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
     <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/playground/">
     <link rel="stylesheet" href="../assets/site.css">
@@ -45,8 +45,8 @@
     <main id="main-content">
         <header class="site-shell page-hero" id="playground">
             <p class="eyebrow">Browser playground</p>
-            <h1>Operate the stack one transition at a time.</h1>
-            <p class="lede">This lab imports the deployed <code>stack.js</code> module. Load a scenario, inspect the newest task, and control each synchronous hand-off.</p>
+            <h1>Operate the stack. Edit the source. Run the real module.</h1>
+            <p class="lede">The controls and editor both use the deployed <code>stack.js</code> module. Load a scenario, inspect each synchronous hand-off, then change and run the related JavaScript.</p>
         </header>
 
         <div class="site-shell playground-page" data-playground>
@@ -102,6 +102,24 @@
 
                 <p class="playground-status" role="status" aria-live="polite" aria-atomic="true" data-playground-status>Loading the playground…</p>
 
+                <section class="playground-code" id="code" aria-labelledby="code-title">
+                    <div class="playground-code__header">
+                        <div>
+                            <p class="eyebrow">Editable replay</p>
+                            <h2 id="code-title">See and run the related JavaScript.</h2>
+                        </div>
+                        <p>Stack actions synchronize a complete replay while the editor is following activity. Once you edit, your custom code is preserved until you choose <strong>Sync activity</strong>. Keep the first package-import line so the isolated runner can map it to the checked-in module.</p>
+                    </div>
+                    <iframe
+                        class="playground-code__frame"
+                        src="./frame.html"
+                        title="Editable easy-stack JavaScript and live console"
+                        sandbox="allow-scripts"
+                        allow="clipboard-write"
+                        data-playground-code-frame
+                    ></iframe>
+                </section>
+
                 <div class="playground-results">
                     <section class="playground-result" aria-labelledby="state-title">
                         <h2 id="state-title">State</h2>
@@ -139,6 +157,7 @@
                     <li>Manual tasks stay active until another Next hand-off.</li>
                     <li>Releasing <code>stop</code> does not resume work by itself.</li>
                     <li>Clear preserves flags; Reset restores constructor defaults.</li>
+                    <li>The editor follows visual actions until you begin a custom edit.</li>
                 </ul>
                 <a class="next-page" href="../queue/">
                     <span>Next page<strong>Stack vs queue</strong></span>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The 28 Integration cases in easy-stack's non-duplicated vanilla-test catalog.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Integration tests · easy-stack">
+    <meta property="og:description" content="Twenty-eight package, documentation, workflow, server, and executable-replay contracts.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/testing/integration/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Integration tests · easy-stack">
+    <meta name="twitter:description" content="Twenty-eight package, documentation, workflow, server, and executable-replay contracts.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/testing/integration/">
+    <link rel="stylesheet" href="../../assets/site.css">
+    <title>Integration tests · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../../">Overview</a></li>
+                    <li><a href="../../guide/">Guide</a></li>
+                    <li><a href="../../api/">API</a></li>
+                    <li><a href="../../patterns/">Patterns</a></li>
+                    <li><a href="../../browser/">Browser</a></li>
+                    <li><a href="../../examples/">Examples</a></li>
+                    <li><a href="../../playground/">Playground</a></li>
+                    <li><a href="../../queue/">Stack vs queue</a></li>
+                    <li><a href="../../migration/">Migration</a></li>
+                    <li><a href="../" aria-current="page">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="suite">
+            <p class="eyebrow">Integration suite · I001–I028</p>
+            <h1>Twenty-eight boundaries working together.</h1>
+            <p class="lede">Integration cases prove consumers receive the intended builds, the package and site stay coherent, and generated Playground code runs against the actual module.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="catalog">
+                    <h2>Unique case catalog</h2>
+                    <ol class="case-catalog">
+                        <li data-case-id="I001" data-contract="package.entry.esm-root"><code>I001</code> package root resolves ESM default and named identity</li>
+                        <li data-case-id="I002" data-contract="package.entry.cjs-root"><code>I002</code> package root resolves the CommonJS constructor identity</li>
+                        <li data-case-id="I003" data-contract="package.entry.deep-stack"><code>I003</code> documented stack deep path maps to each root build</li>
+                        <li data-case-id="I004" data-contract="package.entry.es5-require"><code>I004</code> ES5 require condition maps to the CommonJS build</li>
+                        <li data-case-id="I005" data-contract="package.entry.classic-global"><code>I005</code> classic browser build exposes the Stack global</li>
+                        <li data-case-id="I006" data-contract="package.entry.es5-global"><code>I006</code> ES5 browser build exposes the Stack global</li>
+                        <li data-case-id="I007" data-contract="package.metadata.runtime"><code>I007</code> manifest declares the v2 ESM runtime and Node floor</li>
+                        <li data-case-id="I008" data-contract="package.metadata.lock-engine"><code>I008</code> lockfile mirrors the manifest Node floor</li>
+                        <li data-case-id="I009" data-contract="package.metadata.exports"><code>I009</code> exports and side effects expose only supported builds</li>
+                        <li data-case-id="I010" data-contract="package.metadata.dependencies"><code>I010</code> vanilla-test is pinned dev-only with zero runtime dependencies</li>
+                        <li data-case-id="I011" data-contract="package.metadata.publish"><code>I011</code> publish whitelist and Pages homepage are exact</li>
+                        <li data-case-id="I012" data-contract="docs.pages.structure"><code>I012</code> ten primary pages and four suite catalogs exist</li>
+                        <li data-case-id="I013" data-contract="docs.pages.sections"><code>I013</code> every page exposes its focused section contract</li>
+                        <li data-case-id="I014" data-contract="docs.links.local"><code>I014</code> every local link, asset, and fragment resolves</li>
+                        <li data-case-id="I015" data-contract="docs.navigation.routes"><code>I015</code> every page navigation links all ten primary routes</li>
+                        <li data-case-id="I016" data-contract="docs.navigation.current"><code>I016</code> every page navigation marks exactly one current route</li>
+                        <li data-case-id="I017" data-contract="docs.readme.routing"><code>I017</code> README starts with the header and routes to focused docs</li>
+                        <li data-case-id="I018" data-contract="docs.header.geometry"><code>I018</code> hero CSS and repository header preserve panoramic geometry</li>
+                        <li data-case-id="I019" data-contract="docs.social.geometry"><code>I019</code> social card PNG has the documented dimensions</li>
+                        <li data-case-id="I020" data-contract="docs.testing.catalog"><code>I020</code> test scripts and suite pages match the unique catalog</li>
+                        <li data-case-id="I021" data-contract="workflows.ci.gates"><code>I021</code> CI exposes suite, coverage, compatibility, browser, and package gates</li>
+                        <li data-case-id="I022" data-contract="workflows.pages.artifact"><code>I022</code> Pages is CI-gated and assembles every curated route and runner asset</li>
+                        <li data-case-id="I023" data-contract="repository.javascript-only"><code>I023</code> repository remains JavaScript-only</li>
+                        <li data-case-id="I024" data-contract="server.resolve.valid"><code>I024</code> resolver maps valid root and nested site paths</li>
+                        <li data-case-id="I025" data-contract="server.serve.html"><code>I025</code> local server serves documentation and runner HTML</li>
+                        <li data-case-id="I026" data-contract="server.serve.runner-assets"><code>I026</code> local server serves runner assets with MIME and CORS</li>
+                        <li data-case-id="I027" data-contract="server.serve.header-image"><code>I027</code> local server serves the generated header PNG</li>
+                        <li data-case-id="I028" data-contract="playground.replay.execution"><code>I028</code> prepared source executes to the same visible snapshot</li>
+                    </ol>
+                </section>
+
+                <section id="run">
+                    <h2>Run this suite</h2>
+                    <div class="code-block"><pre><code>npm run test:integration</code></pre></div>
+                    <p>Package, documentation, workflow, server, and replay boundaries each have a distinct contract key. Behavioral Stack flows stay in Functional rather than being repeated here.</p>
+                    <a class="next-page" href="../regression/">
+                        <span>Next suite<strong>Regression</strong></span><b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Testing suites">
+                <strong>Suite catalogs</strong>
+                <ul>
+                    <li><a href="../unit/">Unit · 16</a></li>
+                    <li><a href="../functional/">Functional · 24</a></li>
+                    <li><a href="./" aria-current="page">Integration · 28</a></li>
+                    <li><a href="../regression/">Regression · 16</a></li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner"><p>28 Integration cases · one definition each</p><nav aria-label="Project links"><a href="../">Testing overview</a><a href="https://github.com/RIAEvangelist/easy-stack/tree/main/test/cases">Source catalog</a></nav></div>
+    </footer>
+    <script type="module" src="../../assets/site.js"></script>
+</body>
+</html>

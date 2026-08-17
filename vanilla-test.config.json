@@ -1,5 +1,5 @@
 {
-  "entry": "./test/CI.js",
+  "entry": "./test/coverage.js",
   "reportsDirectory": "./coverage",
   "thresholds": {
     "statements": 100,

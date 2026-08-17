@@ -3,17 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="How easy-stack is tested with vanilla-test across Node, Chrome, package entry points, documentation, and GitHub Pages.">
+    <meta name="description" content="Explore 84 unique easy-stack cases across Unit, Functional, Integration, and Regression suites, all run with vanilla-test.">
     <meta name="color-scheme" content="dark">
     <meta property="og:title" content="Testing · easy-stack">
-    <meta property="og:description" content="Shared vanilla-test contracts, native V8 coverage, package smoke, and CI-gated documentation.">
+    <meta property="og:description" content="Four focused suites, 84 non-duplicated cases, native coverage, and real-browser evidence.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/testing/">
     <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
     <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Testing · easy-stack">
-    <meta name="twitter:description" content="Shared vanilla-test contracts, native V8 coverage, package smoke, and CI-gated documentation.">
+    <meta name="twitter:description" content="Four focused suites, 84 non-duplicated cases, native coverage, and real-browser evidence.">
     <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
     <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/testing/">
     <link rel="stylesheet" href="../assets/site.css">
@@ -45,81 +45,94 @@
     <main id="main-content">
         <header class="site-shell page-hero" id="testing">
             <p class="eyebrow">Testing and evidence</p>
-            <h1>One behavioral suite. Two real runtimes.</h1>
-            <p class="lede">vanilla-test runs the same host-neutral stack contract in Node and Chrome, while focused Node suites verify packaging, browser globals, the site, and its server.</p>
+            <h1>Four focused suites. One non-duplicated catalog.</h1>
+            <p class="lede">Every behavior has one stable case ID and one owner. vanilla-test replays those definitions across supported runtimes without inflating the unique count.</p>
         </header>
 
         <div class="site-shell page-layout">
             <article class="prose">
                 <section id="suites">
-                    <h2>Suite boundaries</h2>
+                    <h2>Explore each suite</h2>
+                    <div class="card-grid card-grid--routes">
+                        <a class="route-card" data-suite="unit" data-cases="16" href="./unit/">
+                            <span class="route-card__tag">16 cases · U001–U016</span>
+                            <h3>Unit</h3>
+                            <p>Small, isolated contracts for Stack state, validation, references, and source preparation.</p>
+                        </a>
+                        <a class="route-card" data-suite="functional" data-cases="24" href="./functional/">
+                            <span class="route-card__tag">24 cases · F001–F024</span>
+                            <h3>Functional</h3>
+                            <p>Complete LIFO flows, control hand-offs, active insertion, async behavior, and Playground journeys.</p>
+                        </a>
+                        <a class="route-card" data-suite="integration" data-cases="28" href="./integration/">
+                            <span class="route-card__tag">28 cases · I001–I028</span>
+                            <h3>Integration</h3>
+                            <p>Package entries, metadata, docs, workflows, server delivery, and executable source replay.</p>
+                        </a>
+                        <a class="route-card" data-suite="regression" data-cases="16" href="./regression/">
+                            <span class="route-card__tag">16 cases · R001–R016</span>
+                            <h3>Regression</h3>
+                            <p>Named guards for recovered defects, path safety, source injection, sandboxing, and Worker lifetime.</p>
+                        </a>
+                    </div>
+                </section>
+
+                <section id="counting">
+                    <h2>How the counts work</h2>
                     <div class="table-wrap">
                         <table>
-                            <thead><tr><th>Suite</th><th>What it proves</th><th>Runner</th></tr></thead>
+                            <thead><tr><th>Evidence</th><th>Count</th><th>Rule</th></tr></thead>
                             <tbody>
-                                <tr><td>Shared core</td><td>LIFO order, synchronous start, pause/resume, active insertion, contents, validation, recovery, async hand-off, and isolation.</td><td>vanilla-test in Node and Chrome</td></tr>
-                                <tr><td>Playground controller</td><td>Newest-first display, cooperative and manual hand-offs, stop/release, clear/reset, and immutable state snapshots.</td><td>vanilla-test in Node</td></tr>
-                                <tr><td>Package contract</td><td>ESM, CommonJS, deep paths, classic globals, ES5 regression, metadata, and zero runtime dependencies.</td><td>vanilla-test in Node</td></tr>
-                                <tr><td>Documentation</td><td>Every route, required section, asset, fragment, README link, workflow, and no-TypeScript contract.</td><td>vanilla-test in Node</td></tr>
-                                <tr><td>Local server</td><td>Content types, page/module/image delivery, containment, malformed paths, and missing files.</td><td>vanilla-test in Node</td></tr>
-                                <tr><td>Packed artifact</td><td>The npm tarball contains only intended files and installs in a clean consumer project.</td><td>CI smoke process</td></tr>
+                                <tr><td>Unique cases</td><td><strong>84</strong></td><td>One stable ID and contract key per behavior, counted once.</td></tr>
+                                <tr><td>Runtime executions</td><td><strong>707</strong></td><td>Expected replays on a successful main push across the CI matrix, coverage runtimes, and Pages verification.</td></tr>
+                                <tr><td>Gated job executions</td><td><strong>10</strong></td><td>Six OS/runtime matrix jobs plus compatibility, coverage, package, and curated-site gates.</td></tr>
                             </tbody>
                         </table>
                     </div>
-                    <p>On Node 22.12 and newer, every repository test uses <code>vanilla-test@2.1.1</code>. A dependency-free fallback runs all 22 behavior and package contracts on the exact Node 12.22.12 compatibility floor.</p>
+                    <p>Running a case again on another Node version, operating system, or browser is an execution—not a newly claimed test. Coverage, package smoke, and deployment are gates rather than case definitions.</p>
                 </section>
 
                 <section id="coverage">
                     <h2>Native V8 coverage</h2>
-                    <p>The source is measured independently in Node and real Chrome. Every metric must reach 100% for <code>stack.js</code>:</p>
-                    <div class="table-wrap">
-                        <table>
-                            <thead><tr><th>Metric</th><th>Gate</th><th>Meaning</th></tr></thead>
-                            <tbody>
-                                <tr><td>Statements</td><td>100%</td><td>Every measured operation executes.</td></tr>
-                                <tr><td>Branches</td><td>100%</td><td>Every control-flow outcome executes.</td></tr>
-                                <tr><td>Functions</td><td>100%</td><td>Every measured function executes.</td></tr>
-                                <tr><td>Lines</td><td>100%</td><td>Every executable source line is observed.</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <p>The shared host-neutral cases measure <code>stack.js</code> independently in Node and real Chrome. Statements, branches, functions, and lines must each reach 100%.</p>
                     <div class="code-block"><pre><code>npm test
-npm run test:playground
-npm run coverage
-npm run coverage:node
-npm run coverage:chrome</code></pre></div>
+npm run test:unit
+npm run test:functional
+npm run test:integration
+npm run test:regression
+npm run test:regression:chrome
+npm run coverage</code></pre></div>
                 </section>
 
                 <section id="ci">
                     <h2>CI and publication gates</h2>
                     <ol>
-                        <li>Test Node 22.12 and 24 across Linux, macOS, and Windows.</li>
-                        <li>Run all dependency-free behavior and package contracts on exact Node 12.22.12.</li>
-                        <li>Collect native coverage in Node 24 and Chrome Stable.</li>
-                        <li>Pack the npm artifact, verify its file list, install it in a clean project, and exercise both import systems.</li>
-                        <li>Validate every documentation route and the contained local server.</li>
-                        <li>Assemble only curated site files and coverage reports.</li>
-                        <li>Deploy GitHub Pages only after every preceding gate passes.</li>
+                        <li>Run all four suites on Node 22.12 and 24 across Linux, macOS, and Windows.</li>
+                        <li>Replay the compatible catalog subset on exact Node 12.22.12 without development dependencies.</li>
+                        <li>Measure 100% native V8 coverage in Node and Chrome.</li>
+                        <li>Run two real-Chrome regression cases through the opaque Playground frame and classic Worker.</li>
+                        <li>Pack, inspect, install, and import the npm artifact in a clean consumer project.</li>
+                        <li>Deploy the curated Pages artifact only after the exact main-branch CI commit succeeds.</li>
                     </ol>
                     <div class="callout">
                         <strong>Runtime dependency count: zero.</strong>
-                        <p>vanilla-test is pinned as development tooling and is excluded from the published runtime dependency graph.</p>
+                        <p><code>vanilla-test@2.1.1</code> is pinned development tooling and never enters the published dependency graph.</p>
                     </div>
-                    <a class="next-page" href="../">
-                        <span>Return to<strong>Documentation overview</strong></span>
+                    <a class="next-page" href="./unit/">
+                        <span>Open the first catalog<strong>Unit suite</strong></span>
                         <b aria-hidden="true">→</b>
                     </a>
                 </section>
             </article>
 
-            <aside class="page-rail" aria-label="Quality gates">
-                <strong>Release gates</strong>
+            <aside class="page-rail" aria-label="Testing summary">
+                <strong>Catalog summary</strong>
                 <ul>
-                    <li>Shared Node + Chrome behavior</li>
-                    <li>100% native V8 coverage</li>
-                    <li>Node 12.22 compatibility</li>
-                    <li>Clean packed-package install</li>
-                    <li>All documentation links resolve</li>
+                    <li>84 unique case IDs</li>
+                    <li>Four exclusive suites</li>
+                    <li>100% native V8 gates</li>
+                    <li>Exact Node 12.22 floor</li>
+                    <li>Real opaque-frame Chrome runs</li>
                 </ul>
             </aside>
         </div>
@@ -130,7 +143,7 @@ npm run coverage:chrome</code></pre></div>
             <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
             <nav aria-label="Project links">
                 <a href="https://github.com/RIAEvangelist/easy-stack/actions">CI</a>
-                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/test/CI.js">Shared suite</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/test/coverage.js">Shared coverage entry</a>
                 <a href="https://github.com/RIAEvangelist/vanilla-test">vanilla-test</a>
                 <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
             </nav>

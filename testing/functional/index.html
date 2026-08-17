@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The 24 Functional cases in easy-stack's non-duplicated vanilla-test catalog.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Functional tests · easy-stack">
+    <meta property="og:description" content="Twenty-four LIFO flows, control hand-offs, async behaviors, and Playground journeys.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/testing/functional/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Functional tests · easy-stack">
+    <meta name="twitter:description" content="Twenty-four LIFO flows, control hand-offs, async behaviors, and Playground journeys.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/testing/functional/">
+    <link rel="stylesheet" href="../../assets/site.css">
+    <title>Functional tests · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../../">Overview</a></li>
+                    <li><a href="../../guide/">Guide</a></li>
+                    <li><a href="../../api/">API</a></li>
+                    <li><a href="../../patterns/">Patterns</a></li>
+                    <li><a href="../../browser/">Browser</a></li>
+                    <li><a href="../../examples/">Examples</a></li>
+                    <li><a href="../../playground/">Playground</a></li>
+                    <li><a href="../../queue/">Stack vs queue</a></li>
+                    <li><a href="../../migration/">Migration</a></li>
+                    <li><a href="../" aria-current="page">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="suite">
+            <p class="eyebrow">Functional suite · F001–F024</p>
+            <h1>Twenty-four complete user flows.</h1>
+            <p class="lede">Functional cases own observable LIFO journeys: cooperation, pause and resume, insertion priority, asynchronous hand-offs, and visual Playground controls.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="catalog">
+                    <h2>Unique case catalog</h2>
+                    <ol class="case-catalog">
+                        <li data-case-id="F001" data-contract="stack.flow.lifo"><code>F001</code> cooperative batches run strict LIFO and drain</li>
+                        <li data-case-id="F002" data-contract="stack.flow.manual"><code>F002</code> autoRun false waits for an explicit hand-off</li>
+                        <li data-case-id="F003" data-contract="stack.flow.stop"><code>F003</code> stop holds work until release and explicit Next</li>
+                        <li data-case-id="F004" data-contract="stack.flow.pause"><code>F004</code> a task can pause and later resume downstream work</li>
+                        <li data-case-id="F005" data-contract="stack.flow.active-insertion"><code>F005</code> active insertion runs before older pending work</li>
+                        <li data-case-id="F006" data-contract="stack.flow.clear-active"><code>F006</code> clear removes pending work without interrupting the active task</li>
+                        <li data-case-id="F007" data-contract="stack.flow.async"><code>F007</code> asynchronous hand-offs preserve pending priority</li>
+                        <li data-case-id="F008" data-contract="builds.flow.parity"><code>F008</code> non-ESM public builds preserve active-insertion priority</li>
+                        <li data-case-id="F009" data-contract="playground.cooperative.pending"><code>F009</code> cooperative preset displays pending work newest-first</li>
+                        <li data-case-id="F010" data-contract="playground.cooperative.drain"><code>F010</code> cooperative Next drains the complete LIFO batch</li>
+                        <li data-case-id="F011" data-contract="playground.manual.step"><code>F011</code> manual Next advances exactly one task</li>
+                        <li data-case-id="F012" data-contract="playground.manual.idle"><code>F012</code> an extra manual hand-off marks a completed stack idle</li>
+                        <li data-case-id="F013" data-contract="playground.stopped.block"><code>F013</code> stopped preset blocks explicit Next</li>
+                        <li data-case-id="F014" data-contract="playground.stopped.release"><code>F014</code> releasing stop alone does not execute pending work</li>
+                        <li data-case-id="F015" data-contract="playground.stopped.resume"><code>F015</code> Next after release drains cooperative work</li>
+                        <li data-case-id="F016" data-contract="playground.clear.state"><code>F016</code> clear preserves flags, activity, and trace</li>
+                        <li data-case-id="F017" data-contract="playground.reset.state"><code>F017</code> reset restores constructor defaults</li>
+                        <li data-case-id="F018" data-contract="playground.custom.order"><code>F018</code> custom tasks display newest-first</li>
+                        <li data-case-id="F019" data-contract="playground.autorun.existing"><code>F019</code> enabling autoRun does not start an existing batch</li>
+                        <li data-case-id="F020" data-contract="playground.autorun.cooperative"><code>F020</code> new cooperative work auto-runs to idle</li>
+                        <li data-case-id="F021" data-contract="playground.autorun.manual"><code>F021</code> new manual work auto-runs and remains active</li>
+                        <li data-case-id="F022" data-contract="playground.source.preset"><code>F022</code> generated source records preset flags before additions</li>
+                        <li data-case-id="F023" data-contract="playground.source.actions"><code>F023</code> generated source appends control actions in order</li>
+                        <li data-case-id="F024" data-contract="playground.source.reset"><code>F024</code> reset discards generated operation history</li>
+                    </ol>
+                </section>
+
+                <section id="run">
+                    <h2>Run this suite</h2>
+                    <div class="code-block"><pre><code>npm run test:functional</code></pre></div>
+                    <p>The public-build parity fixture is table-driven inside one case. Each build is exercised without falsely counting the same behavior four times.</p>
+                    <a class="next-page" href="../integration/">
+                        <span>Next suite<strong>Integration</strong></span><b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Testing suites">
+                <strong>Suite catalogs</strong>
+                <ul>
+                    <li><a href="../unit/">Unit · 16</a></li>
+                    <li><a href="./" aria-current="page">Functional · 24</a></li>
+                    <li><a href="../integration/">Integration · 28</a></li>
+                    <li><a href="../regression/">Regression · 16</a></li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner"><p>24 Functional cases · one definition each</p><nav aria-label="Project links"><a href="../">Testing overview</a><a href="https://github.com/RIAEvangelist/easy-stack/tree/main/test/cases">Source catalog</a></nav></div>
+    </footer>
+    <script type="module" src="../../assets/site.js"></script>
+</body>
+</html>

@@ -10,7 +10,8 @@ Zero-dependency cooperative LIFO execution for Node.js and browsers.
 [![npm downloads](https://img.shields.io/npm/dm/easy-stack?logo=npm)](https://www.npmjs.com/package/easy-stack)
 [![Node.js support](https://img.shields.io/badge/node-%3E%3D12.22-339933?logo=nodedotjs&logoColor=white)](https://riaevangelist.github.io/easy-stack/testing/)
 [![CI](https://github.com/RIAEvangelist/easy-stack/actions/workflows/ci.yml/badge.svg)](https://github.com/RIAEvangelist/easy-stack/actions/workflows/ci.yml)
-[![tests](https://img.shields.io/badge/tests-vanilla--test%202.1.1-12d9c4)](https://riaevangelist.github.io/easy-stack/testing/)
+[![test cases](https://img.shields.io/badge/test_cases-84_unique-12d9c4)](https://riaevangelist.github.io/easy-stack/testing/)
+[![test runner](https://img.shields.io/badge/test_runner-vanilla--test%202.1.1-12d9c4)](https://riaevangelist.github.io/easy-stack/testing/)
 [![coverage](https://img.shields.io/badge/coverage-100%25-12d9c4)](https://riaevangelist.github.io/easy-stack/testing/)
 [![runtime dependencies](https://img.shields.io/badge/runtime_dependencies-0-12d9c4)](https://www.npmjs.com/package/easy-stack?activeTab=dependencies)
 [![license](https://img.shields.io/npm/l/easy-stack)](./licence)
@@ -82,10 +83,15 @@ See the focused [browser guide](https://riaevangelist.github.io/easy-stack/brows
 
 ## Verification
 
-The shared behavior suite runs through `vanilla-test@2.1.1` in Node and headless Chrome. A dependency-free fallback proves the shipped runtime on the declared Node 12.22 floor. CI also verifies both module systems, browser globals, the packed npm artifact, documentation links, and 100% statement, branch, function, and line coverage.
+The non-duplicated catalog contains 84 uniquely identified Unit, Functional, Integration, and Regression cases, all registered through `vanilla-test@2.1.1`. Shared definitions replay in Node and headless Chrome; a dependency-free fallback proves the shipped runtime on the declared Node 12.22 floor. CI also verifies both module systems, browser globals, the packed npm artifact, documentation links, the opaque Playground Worker, and 100% statement, branch, function, and line coverage.
 
 ```sh
 npm test
+npm run test:unit
+npm run test:functional
+npm run test:integration
+npm run test:regression
+npm run test:regression:chrome
 npm run coverage
 ```
 

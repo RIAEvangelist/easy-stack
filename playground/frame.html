@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self' blob: data:; worker-src blob:; connect-src 'none'; img-src 'none'; font-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>easy-stack code runner</title>
+    <link rel="stylesheet" href="./playground.css">
+</head>
+<body>
+    <main class="runner">
+        <section class="editor-panel" aria-labelledby="editor-title">
+            <header>
+                <div>
+                    <span class="dot dot--violet" aria-hidden="true"></span>
+                    <h1 id="editor-title">JavaScript</h1>
+                    <span class="mode" data-runner-mode>Following activity</span>
+                </div>
+                <div class="controls">
+                    <button type="button" data-runner-sync>Sync activity</button>
+                    <button type="button" data-runner-copy>Copy</button>
+                    <button type="button" disabled data-runner-stop>Stop</button>
+                    <button class="run" type="button" data-runner-run>Run</button>
+                </div>
+            </header>
+            <label class="sr-only" for="source">Editable easy-stack JavaScript</label>
+            <textarea id="source" aria-describedby="editor-help" spellcheck="false" autocomplete="off" autocapitalize="off" data-runner-source></textarea>
+            <p class="editor-help" id="editor-help"><span role="status" aria-live="polite" aria-atomic="true" data-runner-status>Waiting for the related stack activity.</span> Keep the first import line. Run with <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Enter</kbd>.</p>
+        </section>
+
+        <section class="console-panel" aria-labelledby="console-title">
+            <header>
+                <div>
+                    <span class="dot dot--green" aria-hidden="true"></span>
+                    <h2 id="console-title">Console</h2>
+                </div>
+                <button type="button" data-runner-clear>Clear</button>
+            </header>
+            <ol id="output" role="log" aria-live="polite" aria-relevant="additions" aria-label="JavaScript console output" data-runner-output></ol>
+        </section>
+    </main>
+    <noscript><p>JavaScript is required to run the editor.</p></noscript>
+    <script type="module" src="./runner.js"></script>
+</body>
+</html>

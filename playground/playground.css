@@ -1,0 +1,276 @@
+:root {
+    color-scheme: dark;
+    --amber: #ffbd3f;
+    --bg: #030817;
+    --cyan: #4de3f2;
+    --green: #78edb1;
+    --line: #253656;
+    --muted: #91a3bf;
+    --panel: #08152b;
+    --red: #ff7f9d;
+    --text: #f4f8ff;
+    --violet: #b69cff;
+    --mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: var(--text);
+    background: var(--bg);
+    font-family: var(--mono);
+}
+
+button,
+textarea {
+    font: inherit;
+}
+
+:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+}
+
+.runner {
+    display: grid;
+    min-height: 39rem;
+    grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
+}
+
+.editor-panel,
+.console-panel {
+    display: grid;
+    min-width: 0;
+    grid-template-rows: auto 1fr auto;
+}
+
+.console-panel {
+    border-left: 1px solid var(--line);
+    background: #020612;
+    grid-template-rows: auto 1fr;
+}
+
+header {
+    display: flex;
+    min-height: 3.75rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.65rem 0.8rem;
+    border-bottom: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.018);
+}
+
+header > div {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+h1,
+h2 {
+    margin: 0;
+    font-size: 0.76rem;
+}
+
+.dot {
+    display: inline-block;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    box-shadow: 0 0 12px currentColor;
+}
+
+.dot--violet {
+    color: var(--violet);
+    background: var(--violet);
+}
+
+.dot--green {
+    color: var(--green);
+    background: var(--green);
+}
+
+.mode {
+    padding: 0.22rem 0.4rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--cyan);
+    font-size: 0.62rem;
+    font-weight: 800;
+}
+
+.mode[data-mode="custom"] {
+    color: var(--amber);
+}
+
+.controls {
+    display: flex;
+    gap: 0.4rem;
+}
+
+button {
+    min-height: 2.75rem;
+    padding: 0.45rem 0.65rem;
+    border: 1px solid var(--line);
+    border-radius: 0.42rem;
+    color: var(--muted);
+    cursor: pointer;
+    background: var(--panel);
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+button:hover {
+    border-color: #526788;
+    color: var(--text);
+}
+
+button.run {
+    border-color: rgba(77, 227, 242, 0.55);
+    color: var(--cyan);
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+#source {
+    width: 100%;
+    min-height: 31rem;
+    resize: none;
+    padding: 1.15rem;
+    border: 0;
+    color: var(--text);
+    background: var(--panel);
+    font-size: 0.78rem;
+    line-height: 1.65;
+    tab-size: 4;
+}
+
+.editor-help {
+    margin: 0;
+    padding: 0.65rem 0.8rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.64rem;
+    line-height: 1.5;
+}
+
+kbd {
+    color: var(--text);
+    font: inherit;
+}
+
+#output {
+    max-height: 35rem;
+    overflow: auto;
+    margin: 0;
+    padding: 0.8rem;
+    list-style: none;
+}
+
+#output li {
+    margin: 0 0 0.55rem;
+    padding: 0.55rem 0.65rem;
+    border-left: 2px solid var(--line);
+    overflow-wrap: anywhere;
+    color: #c5d0e6;
+    background: rgba(255, 255, 255, 0.018);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+#output li::before {
+    display: block;
+    margin-bottom: 0.18rem;
+    color: var(--muted);
+    content: attr(data-level);
+    font-size: 0.58rem;
+    text-transform: uppercase;
+}
+
+#output li.log {
+    border-color: var(--cyan);
+}
+
+#output li.info {
+    border-color: var(--violet);
+}
+
+#output li.warn {
+    border-color: var(--amber);
+    color: var(--amber);
+}
+
+#output li.error {
+    border-color: var(--red);
+    color: #ffb5c5;
+}
+
+#output li.success {
+    border-color: var(--green);
+    color: var(--green);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+@media (max-width: 48rem) {
+    .runner {
+        grid-template-columns: 1fr;
+    }
+
+    .console-panel {
+        border-top: 1px solid var(--line);
+        border-left: 0;
+    }
+
+    #source {
+        min-height: 20rem;
+    }
+
+    #output {
+        min-height: 12rem;
+        max-height: 18rem;
+    }
+}
+
+@media (max-width: 35rem) {
+    header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    header > div,
+    .controls {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .controls button {
+        flex: 1 1 8rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+    }
+}

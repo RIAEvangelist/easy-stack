@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The 16 isolated Unit cases in easy-stack's non-duplicated vanilla-test catalog.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Unit tests · easy-stack">
+    <meta property="og:description" content="Sixteen focused cases for Stack state, validation, references, and source preparation.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/testing/unit/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Unit tests · easy-stack">
+    <meta name="twitter:description" content="Sixteen focused cases for Stack state, validation, references, and source preparation.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/testing/unit/">
+    <link rel="stylesheet" href="../../assets/site.css">
+    <title>Unit tests · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../../">Overview</a></li>
+                    <li><a href="../../guide/">Guide</a></li>
+                    <li><a href="../../api/">API</a></li>
+                    <li><a href="../../patterns/">Patterns</a></li>
+                    <li><a href="../../browser/">Browser</a></li>
+                    <li><a href="../../examples/">Examples</a></li>
+                    <li><a href="../../playground/">Playground</a></li>
+                    <li><a href="../../queue/">Stack vs queue</a></li>
+                    <li><a href="../../migration/">Migration</a></li>
+                    <li><a href="../" aria-current="page">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="suite">
+            <p class="eyebrow">Unit suite · U001–U016</p>
+            <h1>Sixteen small, isolated contracts.</h1>
+            <p class="lede">Unit cases own single-object state, validation, reference identity, and source-preparation behavior. Multi-step workflows belong elsewhere.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="catalog">
+                    <h2>Unique case catalog</h2>
+                    <ol class="case-catalog">
+                        <li data-case-id="U001" data-contract="stack.constructor.defaults"><code>U001</code> constructor exposes the documented empty state</li>
+                        <li data-case-id="U002" data-contract="stack.add.empty"><code>U002</code> empty add returns the receiver without scheduling</li>
+                        <li data-case-id="U003" data-contract="stack.next.empty"><code>U003</code> empty next is an idle no-op</li>
+                        <li data-case-id="U004" data-contract="stack.task.binding"><code>U004</code> a selected task receives its Stack as <code>this</code></li>
+                        <li data-case-id="U005" data-contract="stack.task.return"><code>U005</code> task return values do not perform a hand-off</li>
+                        <li data-case-id="U006" data-contract="stack.instance.isolation"><code>U006</code> instances keep separate live storage</li>
+                        <li data-case-id="U007" data-contract="stack.contents.reference"><code>U007</code> contents preserves a supplied replacement array</li>
+                        <li data-case-id="U008" data-contract="stack.alias.reference"><code>U008</code> stack alias preserves a supplied replacement array</li>
+                        <li data-case-id="U009" data-contract="stack.add.validation.atomic"><code>U009</code> invalid add batches are rejected atomically</li>
+                        <li data-case-id="U010" data-contract="stack.contents.validation.type"><code>U010</code> contents rejects non-array replacement values</li>
+                        <li data-case-id="U011" data-contract="stack.alias.validation.member"><code>U011</code> stack setter rejects a nonfunction member</li>
+                        <li data-case-id="U012" data-contract="playground.import.requirement"><code>U012</code> source preparation requires the canonical package import</li>
+                        <li data-case-id="U013" data-contract="playground.import.rewrite"><code>U013</code> source preparation maps the package import to checked-in source</li>
+                        <li data-case-id="U014" data-contract="stack.add.nonempty-return"><code>U014</code> nonempty add returns the receiver</li>
+                        <li data-case-id="U015" data-contract="stack.contents.execution"><code>U015</code> contents replacement participates in the next hand-off</li>
+                        <li data-case-id="U016" data-contract="stack.alias.execution"><code>U016</code> stack alias replacement participates in the next hand-off</li>
+                    </ol>
+                </section>
+
+                <section id="run">
+                    <h2>Run this suite</h2>
+                    <div class="code-block"><pre><code>npm run test:unit</code></pre></div>
+                    <p>The same host-neutral definitions are selectively reused by the exact Node 12.22 compatibility gate and native coverage entry; those replays do not create new IDs.</p>
+                    <a class="next-page" href="../functional/">
+                        <span>Next suite<strong>Functional</strong></span><b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Testing suites">
+                <strong>Suite catalogs</strong>
+                <ul>
+                    <li><a href="./" aria-current="page">Unit · 16</a></li>
+                    <li><a href="../functional/">Functional · 24</a></li>
+                    <li><a href="../integration/">Integration · 28</a></li>
+                    <li><a href="../regression/">Regression · 16</a></li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner"><p>16 Unit cases · one definition each</p><nav aria-label="Project links"><a href="../">Testing overview</a><a href="https://github.com/RIAEvangelist/easy-stack/tree/main/test/cases">Source catalog</a></nav></div>
+    </footer>
+    <script type="module" src="../../assets/site.js"></script>
+</body>
+</html>
