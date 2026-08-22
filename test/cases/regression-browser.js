@@ -54,6 +54,11 @@ async function withPlayground(check){
         const port=await listen(server);
         const origin=`http://127.0.0.1:${port}`;
         browser=await launchChrome({
+            args:[
+                '--disable-background-timer-throttling',
+                '--disable-backgrounding-occluded-windows',
+                '--disable-renderer-backgrounding'
+            ],
             executablePath:process.env.CHROME_PATH || null,
             headless:true,
             timeoutMs,
@@ -63,6 +68,7 @@ async function withPlayground(check){
             colorScheme:'dark',
             viewport:{width:1440,height:1000}
         });
+        await page.send('Page.bringToFront');
         const errors=[];
         const recordException=event=>errors.push(
             event.exceptionDetails?.exception?.description || event.exceptionDetails?.text
