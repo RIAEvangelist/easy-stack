@@ -91,6 +91,10 @@ async function withPlayground(check){
             `document.querySelector('[data-runner-source]').value.includes('stack.add(')`,
             {timeoutMs}
         );
+        await frame.waitForFunction(
+            `document.querySelector('[data-runner-status]').textContent === 'Editor synchronized with the visible stack activity.'`,
+            {timeoutMs}
+        );
 
         await check({errors,frame,page});
         equal(errors.length,0,`Chrome reported errors: ${errors.join(' | ')}`);
@@ -142,9 +146,8 @@ regression(
         const customSource=`import Stack from 'easy-stack';
 
 const stack=new Stack();
-let tick=0;
-
-setInterval(()=>console.log(\`tick ${'${'}++tick}\`),50);
+setTimeout(()=>console.log('before hard lifetime'),100);
+setTimeout(()=>console.log('after hard lifetime'),4100);
 console.log({size:stack.size});
 `;
 
@@ -154,9 +157,18 @@ console.log({size:stack.size});
             source.dispatchEvent(new Event('input',{bubbles:true}));
             document.querySelector('[data-runner-run]').click();
         })()`);
-        await frame.waitForFunction(
-            `document.querySelector('[data-runner-status]').textContent.startsWith('Module completed')`,
-            {timeoutMs}
+        await frame.waitForFunction(`(() => {
+            const value=document.querySelector('[data-runner-status]').textContent;
+            return value.startsWith('Module completed') || /failed|error|timed out|stopped/i.test(value);
+        })()`,{timeoutMs});
+        const initial=await frame.evaluate(`(() => ({
+            output:document.querySelector('[data-runner-output]').textContent,
+            status:document.querySelector('[data-runner-status]').textContent
+        }))()`);
+        equal(
+            initial.status.startsWith('Module completed'),
+            true,
+            `${initial.status}\n${initial.output}`
         );
         await frame.waitForFunction(
             `document.querySelector('[data-runner-status]').textContent === 'Module completed; its isolated Worker closed after 4 seconds.'`,
@@ -172,12 +184,27 @@ console.log({size:stack.size});
         equal(stopped.disabled,true,'Stop must disable after the hard lifetime closes.');
         equal(stopped.runEnabled,true,'Run must re-enable after the hard lifetime closes.');
         equal(stopped.output.includes('Isolated async window closed after 4 seconds.'),true);
-        assert(stopped.output.includes('tick '),'The async fixture did not run before shutdown.');
-
-        await delay(300);
-        const finalCount=await frame.evaluate(
-            `document.querySelector('[data-runner-output]').children.length`
+        equal(
+            stopped.output.includes('before hard lifetime'),
+            true,
+            'Post-completion work did not run before shutdown.'
         );
-        equal(finalCount,stopped.count,'Console output continued after Worker termination.');
+        equal(
+            stopped.output.includes('after hard lifetime'),
+            false,
+            'Work scheduled beyond the hard lifetime escaped termination.'
+        );
+
+        await delay(500);
+        const finalState=await frame.evaluate(`(() => ({
+            count:document.querySelector('[data-runner-output]').children.length,
+            output:document.querySelector('[data-runner-output]').textContent
+        }))()`);
+        equal(finalState.count,stopped.count,'Console output continued after Worker termination.');
+        equal(
+            finalState.output.includes('after hard lifetime'),
+            false,
+            'The post-lifetime sentinel executed after Worker termination.'
+        );
     })
 );
