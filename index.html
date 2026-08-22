@@ -28,6 +28,7 @@
             <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
                 <ul>
                     <li><a href="./" aria-current="page">Overview</a></li>
+                    <li><a href="./why/">Why easy-stack</a></li>
                     <li><a href="./guide/">Guide</a></li>
                     <li><a href="./api/">API</a></li>
                     <li><a href="./patterns/">Patterns</a></li>
@@ -35,6 +36,7 @@
                     <li><a href="./examples/">Examples</a></li>
                     <li><a href="./playground/">Playground</a></li>
                     <li><a href="./queue/">Stack vs queue</a></li>
+                    <li><a href="./benchmarks/">Benchmarks</a></li>
                     <li><a href="./migration/">Migration</a></li>
                     <li><a href="./testing/">Testing</a></li>
                 </ul>
@@ -55,7 +57,7 @@
                     </div>
                     <div class="hero__actions">
                         <a class="button" href="./guide/">Build your first stack</a>
-                        <a class="button button--secondary" href="./api/">Read the API</a>
+                        <a class="button button--secondary" href="./why/">Why easy-stack</a>
                     </div>
                 </div>
                 <div class="hero__visual">
@@ -69,7 +71,7 @@
                 <div class="section__intro">
                     <p class="eyebrow">The execution contract</p>
                     <h2>Small surface. Explicit control.</h2>
-                    <p>The v2 package keeps the original cooperative model and makes its guarantees consistent across native ESM, CommonJS, and classic browser scripts.</p>
+                    <p>The v2.1 package keeps the original cooperative model, removes WeakMap overhead, and gives native ESM and CommonJS one shared Node implementation.</p>
                 </div>
                 <div class="card-grid">
                     <article class="card">
@@ -104,6 +106,11 @@
                     <p>Pick the page that matches the work in front of you. Each route stays short enough to scan and complete.</p>
                 </div>
                 <div class="card-grid card-grid--routes">
+                    <a class="route-card" href="./why/">
+                        <span class="route-card__tag">Choose</span>
+                        <h3>Why easy-stack</h3>
+                        <p>Match its newest-first contract to the work you actually need to run.</p>
+                    </a>
                     <a class="route-card" href="./guide/">
                         <span class="route-card__tag">Start here</span>
                         <h3>Guide</h3>
@@ -135,9 +142,14 @@
                         <p>Edit and run isolated LIFO scenarios directly in the browser.</p>
                     </a>
                     <a class="route-card" href="./queue/">
-                        <span class="route-card__tag">Choose</span>
+                        <span class="route-card__tag">Compare</span>
                         <h3>Stack vs queue</h3>
                         <p>Decide whether newest-first or oldest-first fits your workload.</p>
+                    </a>
+                    <a class="route-card" href="./benchmarks/">
+                        <span class="route-card__tag">Measure</span>
+                        <h3>Benchmarks</h3>
+                        <p>Reproduce the version-to-version private-state performance evidence.</p>
                     </a>
                     <a class="route-card" href="./migration/">
                         <span class="route-card__tag">Upgrade</span>

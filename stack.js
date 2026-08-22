@@ -1,6 +1,3 @@
-const stacks = new WeakMap();
-const states = new WeakMap();
-
 function validateTasks(tasks) {
     const invalidIndex = tasks.findIndex((task) => typeof task !== 'function');
 
@@ -10,16 +7,17 @@ function validateTasks(tasks) {
 }
 
 class Stack {
+    #stack = [];
+    #running = false;
+
     constructor() {
-        stacks.set(this, []);
-        states.set(this, { running: false });
         this.autoRun = true;
         this.stop = false;
     }
 
     add(...tasks) {
         validateTasks(tasks);
-        stacks.get(this).push(...tasks);
+        this.#stack.push(...tasks);
 
         if (!this.running && !this.stop && this.autoRun) {
             this.next();
@@ -29,34 +27,30 @@ class Stack {
     }
 
     next() {
-        const stack = stacks.get(this);
-        const state = states.get(this);
-
-        if (this.stop || stack.length === 0) {
-            state.running = false;
+        if (this.stop || this.#stack.length === 0) {
+            this.#running = false;
             return;
         }
 
-        state.running = true;
-        const task = stack.pop();
+        this.#running = true;
+        const task = this.#stack.pop();
 
         if (typeof task !== 'function') {
-            state.running = false;
+            this.#running = false;
             throw new TypeError('The next Stack task must be a function.');
         }
 
         try {
             task.call(this);
         } catch (error) {
-            state.running = false;
+            this.#running = false;
             throw error;
         }
     }
 
     clear() {
-        const stack = [];
-        stacks.set(this, stack);
-        return stack;
+        this.#stack = [];
+        return this.#stack;
     }
 
     contents(tasks) {
@@ -64,11 +58,11 @@ class Stack {
             this.stack = tasks;
         }
 
-        return stacks.get(this);
+        return this.#stack;
     }
 
     get stack() {
-        return stacks.get(this);
+        return this.#stack;
     }
 
     set stack(tasks) {
@@ -77,19 +71,22 @@ class Stack {
         }
 
         validateTasks(tasks);
-        stacks.set(this, tasks);
+        this.#stack = tasks;
     }
 
     get running() {
-        return states.get(this).running;
+        return this.#running;
     }
 
     get size() {
-        return stacks.get(this).length;
+        return this.#stack.length;
     }
 }
 
+Stack.Stack = Stack;
+
 export {
     Stack as default,
-    Stack
+    Stack,
+    Stack as 'module.exports'
 };

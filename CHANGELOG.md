@@ -4,11 +4,19 @@ All notable changes to easy-stack are documented here.
 
 ## Unreleased
 
+## 2.1.0 — 2026-08-21
+
+- Replace the modern runtimes' two WeakMaps with native private fields while preserving the documented Stack behavior.
+- Make native ESM and CommonJS load the same synchronous `stack.js` implementation and return the same constructor identity.
+- Raise the Node.js runtime floor to 22.13.0 for warning-free `require(esm)` interoperability; easy-stack 2.0.0 remains available for older runtimes.
+- Add a reproducible, checksum-validated version benchmark against the exact 2.0.0 release, plus CI benchmark evidence.
+- Add focused Why easy-stack and Benchmarks documentation routes with explicit fit, tradeoffs, methodology, and results.
+- Add a numeric-release-only, OIDC trusted-publishing workflow for npm delivery.
 - Correct the documentation hero image so responsive sizing preserves its intrinsic aspect ratio.
 - Add a dedicated, dependency-free browser Playground backed by the real stack module and vanilla-test controller contracts.
 - Pair every Playground activity with synchronized, editable JavaScript, isolated Worker execution, and a live console.
-- Reorganize tests into 84 uniquely identified Unit, Functional, Integration, and Regression cases without duplicate definitions.
-- Expand the curated GitHub Pages documentation from nine pages to ten primary routes plus four focused test-catalog pages.
+- Reorganize tests into 86 uniquely identified Unit, Functional, Integration, and Regression cases without duplicate definitions.
+- Expand the curated GitHub Pages documentation to twelve primary routes plus four focused test-catalog pages.
 
 ## 2.0.0 — 2026-08-16
 

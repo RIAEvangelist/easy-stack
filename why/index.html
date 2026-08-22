@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="See when easy-stack is the right JavaScript runner: newest-first priority, explicit hand-offs, zero runtime dependencies, and verified native performance.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Why easy-stack · choose explicit LIFO control">
+    <meta property="og:description" content="A small, tested JavaScript runner for work where the newest pending task should win.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/why/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Why easy-stack · choose explicit LIFO control">
+    <meta name="twitter:description" content="A small, tested JavaScript runner for work where the newest pending task should win.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/why/">
+    <link rel="stylesheet" href="../assets/site.css">
+    <title>Why easy-stack · choose explicit LIFO control</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../">Overview</a></li>
+                    <li><a href="../why/" aria-current="page">Why easy-stack</a></li>
+                    <li><a href="../guide/">Guide</a></li>
+                    <li><a href="../api/">API</a></li>
+                    <li><a href="../patterns/">Patterns</a></li>
+                    <li><a href="../browser/">Browser</a></li>
+                    <li><a href="../examples/">Examples</a></li>
+                    <li><a href="../playground/">Playground</a></li>
+                    <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../benchmarks/">Benchmarks</a></li>
+                    <li><a href="../migration/">Migration</a></li>
+                    <li><a href="../testing/">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="why">
+            <p class="eyebrow">Why easy-stack</p>
+            <h1>Choose it when newer work should win.</h1>
+            <p class="lede">easy-stack turns recency into an explicit execution rule. It is a focused LIFO runner—not a general job system—so the behavior stays small enough to understand, inspect, and trust.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="fit">
+                    <h2>A sharp fit for priority work</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>You need</th><th>What easy-stack gives you</th></tr></thead>
+                            <tbody>
+                                <tr><td>Newest intent first</td><td>Strict LIFO selection through ordinary <code>push()</code> and <code>pop()</code> semantics.</td></tr>
+                                <tr><td>Deliberate continuation</td><td>Each task owns the hand-off and calls <code>this.next()</code> when downstream work may proceed.</td></tr>
+                                <tr><td>Priority discovered during work</td><td>New tasks inserted by the active task run before older pending work.</td></tr>
+                                <tr><td>Node and browser delivery</td><td>One native Node module, a modern classic script, and an ES5 browser fallback.</td></tr>
+                                <tr><td>Low operational weight</td><td>Zero runtime dependencies, no build step, and a compact public API.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="proof">
+                    <h2>Confidence comes from evidence</h2>
+                    <ul>
+                        <li><strong>One Node implementation:</strong> ESM <code>import</code> and CommonJS <code>require()</code> resolve to the same <code>stack.js</code> constructor on Node 22.13 and newer.</li>
+                        <li><strong>Native private state:</strong> v2.1 removes runtime WeakMap lookups while keeping the live-array, control-field, validation, and error-recovery contracts.</li>
+                        <li><strong>Named behavior:</strong> 86 non-duplicated Unit, Functional, Integration, and Regression cases explain exactly what is protected.</li>
+                        <li><strong>Measured quality:</strong> shared Node and Chrome coverage gates require 100% statements, branches, functions, and lines.</li>
+                        <li><strong>Reproducible performance:</strong> the checked-in benchmark compares the exact 2.0.0 release with the current implementation and validates every timed run.</li>
+                    </ul>
+                    <div class="callout">
+                        <strong>No “fastest library” claim.</strong>
+                        <p>The benchmark measures easy-stack against its own previous release. It demonstrates the value of this implementation change without pretending unrelated packages have equivalent contracts.</p>
+                    </div>
+                </section>
+
+                <section id="tradeoffs">
+                    <h2>Know when to choose something else</h2>
+                    <p>Use a FIFO queue when arrival order and fairness matter more than recency. Use a concurrency pool when the main problem is limiting parallel promises. Use a durable broker when work must survive process failure, retry across machines, or be audited as a job record.</p>
+                    <p>Choose easy-stack when execution is in-process, newest-first ordering is intentional, and the active task should decide when control moves on.</p>
+                    <a class="next-page" href="../guide/">
+                        <span>Next page<strong>Build your first stack</strong></span>
+                        <b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Selection summary">
+                <strong>Use easy-stack for</strong>
+                <ul>
+                    <li>Newest-first priority</li>
+                    <li>Explicit task hand-offs</li>
+                    <li>Active insertion</li>
+                    <li>Zero-dependency delivery</li>
+                    <li>Inspectable pending work</li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack">GitHub</a>
+                <a href="https://www.npmjs.com/package/easy-stack">npm</a>
+                <a href="../testing/">Testing</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="../assets/site.js"></script>
+</body>
+</html>

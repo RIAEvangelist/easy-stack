@@ -1,33 +1,32 @@
 {
   "name": "easy-stack",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Zero-dependency cooperative LIFO execution for Node.js and browsers",
   "type": "module",
-  "main": "./stack.cjs",
+  "main": "./stack.js",
   "module": "./stack.js",
   "browser": "./stack.js",
   "exports": {
     ".": {
       "import": "./stack.js",
-      "require": "./stack.cjs",
+      "require": "./stack.js",
       "default": "./stack.js"
     },
     "./stack.js": {
       "import": "./stack.js",
-      "require": "./stack.cjs",
+      "require": "./stack.js",
       "default": "./stack.js"
     },
     "./stack-vanilla.js": "./stack-vanilla.js",
     "./es5.js": {
       "import": "./stack.js",
-      "require": "./stack.cjs",
+      "require": "./stack.js",
       "default": "./es5.js"
     },
     "./package.json": "./package.json"
   },
   "files": [
     "stack.js",
-    "stack.cjs",
     "stack-vanilla.js",
     "es5.js",
     "CHANGELOG.md",
@@ -39,7 +38,7 @@
     "./es5.js"
   ],
   "engines": {
-    "node": ">=12.22.0"
+    "node": ">=22.13.0"
   },
   "scripts": {
     "test": "node ./scripts/test.js all",
@@ -48,10 +47,10 @@
     "test:integration": "node ./scripts/test.js integration",
     "test:regression": "node ./scripts/test.js regression",
     "test:regression:chrome": "node ./scripts/test.js browser",
-    "test:legacy": "node ./scripts/test.js legacy",
     "coverage": "vanilla-test coverage",
     "coverage:node": "vanilla-test coverage node",
     "coverage:chrome": "vanilla-test coverage chrome",
+    "benchmark": "node --expose-gc ./scripts/benchmark.js",
     "check": "npm test && npm run coverage:node",
     "start": "node ./scripts/serve.js"
   },

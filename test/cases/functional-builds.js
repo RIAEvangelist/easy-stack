@@ -33,7 +33,7 @@ function activeInsertion(Stack){
 
 functional('F008','builds.flow.parity','non-ESM public builds preserve active-insertion priority',()=>{
     const builds=[
-        ['CommonJS',require('../../stack.cjs')],
+        ['CommonJS',require('../../stack.js')],
         ['classic browser',browserStack('stack-vanilla.js')],
         ['ES5 browser',browserStack('es5.js')]
     ];

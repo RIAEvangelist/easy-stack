@@ -3,6 +3,7 @@ import './cases/regression-es5.js';
 import './cases/regression-playground.js';
 import './cases/regression-server.js';
 import './cases/regression-site.js';
+import './cases/regression-runtime.js';
 import {run} from './harness.js';
 import {validateCatalog} from './catalog.js';
 

@@ -26,7 +26,8 @@ integration('I001','package.entry.esm-root','package root resolves ESM default a
 integration('I002','package.entry.cjs-root','package root resolves the CommonJS constructor identity',()=>{
     const required=require('easy-stack');
     equal(required,required.Stack);
-    equal(required,require('../../stack.cjs'));
+    equal(required,require('../../stack.js'));
+    equal(required,Stack);
 });
 
 integration('I003','package.entry.deep-stack','documented stack deep path maps to each root build',async()=>{
@@ -37,7 +38,7 @@ integration('I003','package.entry.deep-stack','documented stack deep path maps t
     equal(require('easy-stack/stack.js'),require('easy-stack'));
 });
 
-integration('I004','package.entry.es5-require','ES5 require condition maps to the CommonJS build',()=>{
+integration('I004','package.entry.es5-require','ES5 require condition maps to the shared module build',()=>{
     equal(require('easy-stack/es5.js'),require('easy-stack'));
 });
 
@@ -49,12 +50,12 @@ integration('I006','package.entry.es5-global','ES5 browser build exposes the Sta
     equal(typeof browserStack('es5.js'),'function');
 });
 
-integration('I007','package.metadata.runtime','manifest declares the v2 ESM runtime and Node floor',()=>{
-    equal(packageData.version,'2.0.0');
+integration('I007','package.metadata.runtime','manifest declares the shared runtime and Node floor',()=>{
+    equal(packageData.version,'2.1.0');
     equal(packageData.type,'module');
-    equal(packageData.main,'./stack.cjs');
+    equal(packageData.main,'./stack.js');
     equal(packageData.module,'./stack.js');
-    equal(packageData.engines.node,'>=12.22.0');
+    equal(packageData.engines.node,'>=22.13.0');
 });
 
 integration('I008','package.metadata.lock-engine','lockfile mirrors the manifest Node floor',()=>{
@@ -63,9 +64,9 @@ integration('I008','package.metadata.lock-engine','lockfile mirrors the manifest
 
 integration('I009','package.metadata.exports','exports and side effects expose only supported builds',()=>{
     equal(packageData.exports['.'].import,'./stack.js');
-    equal(packageData.exports['.'].require,'./stack.cjs');
+    equal(packageData.exports['.'].require,'./stack.js');
     equal(packageData.exports['./stack.js'].import,'./stack.js');
-    equal(packageData.exports['./es5.js'].require,'./stack.cjs');
+    equal(packageData.exports['./es5.js'].require,'./stack.js');
     deepEqual(packageData.sideEffects,['./stack-vanilla.js','./es5.js']);
 });
 
@@ -77,7 +78,6 @@ integration('I010','package.metadata.dependencies','vanilla-test is pinned dev-o
 integration('I011','package.metadata.publish','publish whitelist and Pages homepage are exact',()=>{
     deepEqual(packageData.files,[
         'stack.js',
-        'stack.cjs',
         'stack-vanilla.js',
         'es5.js',
         'CHANGELOG.md',

@@ -1,10 +1,18 @@
-# Migrating from easy-stack 1.x to 2.0
+# Migrating to easy-stack 2.1
 
 Version 2 keeps the package's central behavior: callbacks execute synchronously in last-in, first-out order, each callback receives the stack as `this`, and a callback calls `this.next()` when the following item should run.
 
+## Version 2.1 runtime boundary
+
+easy-stack 2.1 requires Node.js 22.13 or newer. That exact floor lets native ESM `import` and CommonJS `require()` load the same synchronous `stack.js` file without Node's default experimental warning. `require('easy-stack')` still returns the constructor directly. See Node's [documented `require(esm)` version history](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require).
+
+Applications that must stay on an older Node release should remain on easy-stack 2.0.0. The separate `stack.cjs` implementation is no longer shipped in 2.1 because the two loaders now share one source of truth.
+
+The native module and modern classic-browser build now use private class fields. Current browsers can use `stack.js` or `stack-vanilla.js`; older browser targets can continue using the unchanged ES5-syntax `es5.js` build.
+
 ## Runtime and imports
 
-The shipped runtime supports Node.js 12.22 and newer. The `vanilla-test` development toolchain requires Node.js 22.12 or newer, but it is not a runtime dependency.
+The shipped runtime and repository toolchain both run on Node.js 22.13 and newer. `vanilla-test` remains development-only and is not a runtime dependency.
 
 CommonJS remains available:
 
@@ -56,9 +64,10 @@ When a callback throws, the same error still reaches the caller. The runner now 
 
 ## Upgrade checklist
 
-1. Keep existing `require('easy-stack')` imports or move to the native ESM default export.
-2. Replace browser code that treated `contents` as an array with the `stack` property.
-3. Ensure every enqueued value is a function.
-4. Check code that depended on `add()` returning `undefined`.
-5. Remove direct assignments to `stack.running`; it is now a read-only status view.
-6. Run the suite on the oldest Node version your application supports.
+1. Confirm production and development environments run Node 22.13 or newer; otherwise pin easy-stack 2.0.0.
+2. Keep existing `require('easy-stack')` imports or use the native ESM default export; both now load `stack.js`.
+3. Replace browser code that treated `contents` as an array with the `stack` property.
+4. Ensure every enqueued value is a function.
+5. Check code that depended on `add()` returning `undefined`.
+6. Remove direct assignments to `stack.running`; it is now a read-only status view.
+7. Use `es5.js` for browser targets that cannot parse private class fields.

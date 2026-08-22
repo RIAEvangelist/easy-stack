@@ -66,6 +66,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p \
+            _site/why \
             _site/guide \
             _site/api \
             _site/patterns \
@@ -73,6 +74,7 @@ jobs:
             _site/examples \
             _site/playground \
             _site/queue \
+            _site/benchmarks \
             _site/migration \
             _site/testing \
             _site/testing/unit \
@@ -83,6 +85,7 @@ jobs:
             _site/reports
 
           cp index.html _site/
+          cp why/index.html _site/why/
           cp guide/index.html _site/guide/
           cp api/index.html _site/api/
           cp patterns/index.html _site/patterns/
@@ -97,6 +100,7 @@ jobs:
             playground/worker.js \
             _site/playground/
           cp queue/index.html _site/queue/
+          cp benchmarks/index.html benchmarks/results.json _site/benchmarks/
           cp migration/index.html _site/migration/
           cp testing/index.html _site/testing/
           cp testing/unit/index.html _site/testing/unit/
@@ -111,6 +115,7 @@ jobs:
 
           for REQUIRED_PATH in \
             _site/index.html \
+            _site/why/index.html \
             _site/guide/index.html \
             _site/api/index.html \
             _site/patterns/index.html \
@@ -123,6 +128,8 @@ jobs:
             _site/playground/runtime.js \
             _site/playground/worker.js \
             _site/queue/index.html \
+            _site/benchmarks/index.html \
+            _site/benchmarks/results.json \
             _site/migration/index.html \
             _site/testing/index.html \
             _site/testing/unit/index.html \

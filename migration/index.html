@@ -28,6 +28,7 @@
             <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
                 <ul>
                     <li><a href="../">Overview</a></li>
+                    <li><a href="../why/">Why easy-stack</a></li>
                     <li><a href="../guide/">Guide</a></li>
                     <li><a href="../api/">API</a></li>
                     <li><a href="../patterns/">Patterns</a></li>
@@ -35,6 +36,7 @@
                     <li><a href="../examples/">Examples</a></li>
                     <li><a href="../playground/">Playground</a></li>
                     <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../benchmarks/">Benchmarks</a></li>
                     <li><a href="../migration/" aria-current="page">Migration</a></li>
                     <li><a href="../testing/">Testing</a></li>
                 </ul>
@@ -44,7 +46,7 @@
 
     <main id="main-content">
         <header class="site-shell page-hero" id="migration">
-            <p class="eyebrow">v1 → v2</p>
+            <p class="eyebrow">v1 or v2.0 → v2.1</p>
             <h1>Modern entries. Familiar execution.</h1>
             <p class="lede">Version 2 keeps synchronous cooperative LIFO flow while repairing the divergent package builds and making failure behavior explicit.</p>
         </header>
@@ -63,13 +65,22 @@
                 </section>
 
                 <section>
+                    <h2>The v2.1 runtime boundary</h2>
+                    <p>Version 2.1 requires Node 22.13 or newer. Native ESM and CommonJS now load the same synchronous <code>stack.js</code> file, and <code>require('easy-stack')</code> still returns the constructor directly without Node's default experimental warning. Node's <a href="https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require"><code>require(esm)</code> history</a> records that exact boundary.</p>
+                    <div class="callout">
+                        <strong>Need an older Node runtime?</strong>
+                        <p>Remain on easy-stack 2.0.0. The separate <code>stack.cjs</code> implementation is no longer shipped in 2.1.</p>
+                    </div>
+                </section>
+
+                <section>
                     <h2>What changes deliberately</h2>
                     <div class="table-wrap">
                         <table>
                             <thead><tr><th>v1 behavior</th><th>v2 contract</th></tr></thead>
                             <tbody>
                                 <tr><td>Package root was CommonJS only.</td><td>Conditional exports provide native ESM and CommonJS.</td></tr>
-                                <tr><td>Node support claimed Node 6.</td><td>Shipped runtime support begins at Node 12.22.</td></tr>
+                                <tr><td>Node support claimed Node 6.</td><td>The current v2.1 runtime begins at exact Node 22.13.</td></tr>
                                 <tr><td><code>add()</code> returned <code>undefined</code>.</td><td><code>add()</code> returns the stack for chaining.</td></tr>
                                 <tr><td>Invalid callbacks failed only when invoked.</td><td>The entire batch is validated atomically before mutation.</td></tr>
                                 <tr><td>A thrown task left <code>running</code> stuck true.</td><td>The same error is rethrown after the runner returns to idle.</td></tr>
@@ -101,13 +112,14 @@ stack.stack = [first, second];</code></pre></div>
                 <section id="checklist">
                     <h2>Upgrade checklist</h2>
                     <ol>
-                        <li>Confirm production Node is 12.22 or newer.</li>
+                        <li>Confirm production Node is 22.13 or newer; otherwise pin 2.0.0.</li>
                         <li>Keep CommonJS imports or adopt the new native ESM import.</li>
                         <li>Search browser code for property-style <code>.contents</code> access.</li>
                         <li>Ensure every value passed to <code>add()</code> is a function.</li>
                         <li>Check code that depended on <code>add()</code> returning <code>undefined</code>.</li>
                         <li>Remove direct assignments to <code>stack.running</code>; it is now read-only.</li>
                         <li>Run the application's failure paths; a thrown task is now recoverable.</li>
+                        <li>Use <code>es5.js</code> for browser targets that cannot parse private class fields.</li>
                         <li>Exercise classic-script pages through HTTP, not a local file URL.</li>
                     </ol>
                     <a class="next-page" href="../testing/">
@@ -120,10 +132,10 @@ stack.stack = [first, second];</code></pre></div>
             <aside class="page-rail" aria-label="Migration summary">
                 <strong>Release boundary</strong>
                 <ul>
-                    <li>Runtime: Node ≥12.22</li>
-                    <li>Dev tests: Node ≥22.12</li>
+                    <li>Runtime: Node ≥22.13</li>
+                    <li>Dev tests: Node ≥22.13</li>
                     <li>Root require preserved</li>
-                    <li>Native ESM added</li>
+                    <li>One shared Node module</li>
                     <li>Failure recovery repaired</li>
                 </ul>
             </aside>

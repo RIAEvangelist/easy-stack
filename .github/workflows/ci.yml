@@ -27,7 +27,7 @@ jobs:
           - macos-latest
           - windows-latest
         node-version:
-          - '22.12.0'
+          - '22.13.0'
           - '24'
 
     steps:
@@ -57,28 +57,6 @@ jobs:
 
       - name: Preview the packed package
         run: npm pack --dry-run
-
-  compatibility:
-    name: Runtime floor / Node 12.22.12
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-
-      - name: Set up exact Node.js runtime floor
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version: '12.22.12'
-
-      - name: Run dependency-free behavior and package contracts
-        env:
-          EASY_STACK_TEST_LEGACY: '1'
-        run: node ./scripts/test.js legacy
-
-      - name: Exercise the CommonJS entry
-        run: node --eval "const Stack=require('./stack.cjs'); const stack=new Stack(); stack.add(function(){ this.next(); }); if (stack.running || stack.size) process.exitCode=1;"
 
   coverage:
     name: Native V8 coverage / Node 24 + Chrome
@@ -160,7 +138,6 @@ jobs:
             package/package.json \
             package/README.md \
             package/stack.js \
-            package/stack.cjs \
             package/stack-vanilla.js \
             package/es5.js \
             package/CHANGELOG.md \
@@ -170,9 +147,9 @@ jobs:
             grep --fixed-strings --line-regexp --quiet -- "$REQUIRED_FILE" "$PACK_FILE_LIST"
           done
 
-          if grep --extended-regexp --quiet '^package/(assets|coverage|example|playground|scripts|test|\.github)/' "$PACK_FILE_LIST"; then
+          if grep --extended-regexp --quiet '^package/(stack\.cjs|assets|benchmarks|coverage|example|playground|scripts|test|why|\.github)/' "$PACK_FILE_LIST"; then
             echo "Packed artifact contains repository-only files."
-            grep --extended-regexp '^package/(assets|coverage|example|playground|scripts|test|\.github)/' "$PACK_FILE_LIST"
+            grep --extended-regexp '^package/(stack\.cjs|assets|benchmarks|coverage|example|playground|scripts|test|why|\.github)/' "$PACK_FILE_LIST"
             exit 1
           fi
 
@@ -181,13 +158,40 @@ jobs:
           cd "$SMOKE_DIRECTORY"
           npm init --yes >/dev/null
           npm install "$TARBALL_PATH" --ignore-scripts
-          EXPECTED_VERSION="$EXPECTED_VERSION" node --input-type=module --eval "import fs from 'node:fs'; import Stack, { Stack as NamedStack } from 'easy-stack'; const manifest=JSON.parse(fs.readFileSync('./node_modules/easy-stack/package.json','utf8')); const order=[]; const stack=new Stack(); stack.add(function(){ order.push('bottom'); this.next(); },function(){ order.push('top'); this.next(); }); if (Stack !== NamedStack || order.join(',') !== 'top,bottom' || manifest.version !== process.env.EXPECTED_VERSION) process.exitCode=1;"
-          node --eval "const Stack=require('easy-stack'); if (Stack !== Stack.Stack || new Stack().size !== 0) process.exitCode=1;"
+          EXPECTED_VERSION="$EXPECTED_VERSION" node --input-type=module --eval "import fs from 'node:fs'; import { createRequire } from 'node:module'; import Stack, { Stack as NamedStack } from 'easy-stack'; const require=createRequire(import.meta.url); const RequiredStack=require('easy-stack'); const manifest=JSON.parse(fs.readFileSync('./node_modules/easy-stack/package.json','utf8')); const order=[]; const stack=new Stack(); stack.add(function(){ order.push('bottom'); this.next(); },function(){ order.push('top'); this.next(); }); if (Stack !== NamedStack || Stack !== RequiredStack || RequiredStack.Stack !== Stack || order.join(',') !== 'top,bottom' || manifest.version !== process.env.EXPECTED_VERSION) process.exitCode=1;"
 
       - name: Upload packed npm artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: packed-npm-artifact
           path: '*.tgz'
+          if-no-files-found: error
+          retention-days: 14
+
+  benchmark:
+    name: Version benchmark / Node 24
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository and tagged baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '24'
+
+      - name: Run validated version benchmark
+        shell: bash
+        run: npm run benchmark --silent | tee benchmark-results.json
+
+      - name: Upload benchmark evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: benchmark-results
+          path: benchmark-results.json
           if-no-files-found: error
           retention-days: 14

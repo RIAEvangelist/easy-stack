@@ -3,17 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="The 16 Regression cases in easy-stack's non-duplicated vanilla-test catalog.">
+    <meta name="description" content="The 17 Regression cases in easy-stack's non-duplicated vanilla-test catalog.">
     <meta name="color-scheme" content="dark">
     <meta property="og:title" content="Regression tests · easy-stack">
-    <meta property="og:description" content="Sixteen named guards for recovery, compatibility, safety, sandboxing, and real Worker lifetime.">
+    <meta property="og:description" content="Seventeen named guards for recovery, compatibility, private-state performance, safety, sandboxing, and real Worker lifetime.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/testing/regression/">
     <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
     <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Regression tests · easy-stack">
-    <meta name="twitter:description" content="Sixteen named guards for recovery, compatibility, safety, sandboxing, and real Worker lifetime.">
+    <meta name="twitter:description" content="Seventeen named guards for recovery, compatibility, private-state performance, safety, sandboxing, and real Worker lifetime.">
     <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
     <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/testing/regression/">
     <link rel="stylesheet" href="../../assets/site.css">
@@ -28,6 +28,7 @@
             <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
                 <ul>
                     <li><a href="../../">Overview</a></li>
+                    <li><a href="../../why/">Why easy-stack</a></li>
                     <li><a href="../../guide/">Guide</a></li>
                     <li><a href="../../api/">API</a></li>
                     <li><a href="../../patterns/">Patterns</a></li>
@@ -35,6 +36,7 @@
                     <li><a href="../../examples/">Examples</a></li>
                     <li><a href="../../playground/">Playground</a></li>
                     <li><a href="../../queue/">Stack vs queue</a></li>
+                    <li><a href="../../benchmarks/">Benchmarks</a></li>
                     <li><a href="../../migration/">Migration</a></li>
                     <li><a href="../" aria-current="page">Testing</a></li>
                 </ul>
@@ -44,8 +46,8 @@
 
     <main id="main-content">
         <header class="site-shell page-hero" id="suite">
-            <p class="eyebrow">Regression suite · R001–R016</p>
-            <h1>Sixteen defects that stay fixed.</h1>
+            <p class="eyebrow">Regression suite · R001–R017</p>
+            <h1>Seventeen defects that stay fixed.</h1>
             <p class="lede">Regression cases are reserved for specific failure modes: recovery, ES5 quirks, injection, path containment, sandbox policy, and real-browser Worker failures.</p>
         </header>
 
@@ -68,8 +70,9 @@
                         <li data-case-id="R012" data-contract="regression.server.missing-file"><code>R012</code> missing files return 404</li>
                         <li data-case-id="R013" data-contract="regression.site.remote-assets"><code>R013</code> site has no remote runtime asset or avatar dependency</li>
                         <li data-case-id="R014" data-contract="regression.playground.sandbox"><code>R014</code> editor runner remains opaque, CSP-bound, and free of text-evaluation shortcuts</li>
-                        <li data-case-id="R015" data-contract="playground.worker.opaque-classic-bootstrap"><code>R015</code> opaque editor sandbox runs synchronized LIFO source in a classic Worker</li>
-                        <li data-case-id="R016" data-contract="playground.worker.completed-module-hard-lifetime"><code>R016</code> completed async module is terminated at the hard Worker lifetime</li>
+                        <li data-case-id="R015" data-contract="regression.runtime.weakmap-state"><code>R015</code> shipped modern runtimes keep private state off WeakMap</li>
+                        <li data-case-id="R016" data-contract="playground.worker.opaque-classic-bootstrap"><code>R016</code> opaque editor sandbox runs synchronized LIFO source in a classic Worker</li>
+                        <li data-case-id="R017" data-contract="playground.worker.completed-module-hard-lifetime"><code>R017</code> completed async module is terminated at the hard Worker lifetime</li>
                     </ol>
                 </section>
 
@@ -77,7 +80,7 @@
                     <h2>Run this suite</h2>
                     <div class="code-block"><pre><code>npm run test:regression
 npm run test:regression:chrome</code></pre></div>
-                    <p>R015 and R016 run only in installed Chrome. They use the production opaque iframe and classic Worker, including the hard four-second lifetime after module completion.</p>
+                    <p>R016 and R017 run only in installed Chrome. They use the production opaque iframe and classic Worker, including the hard four-second lifetime after module completion.</p>
                     <a class="next-page" href="../">
                         <span>Return to<strong>Testing overview</strong></span><b aria-hidden="true">→</b>
                     </a>
@@ -89,15 +92,15 @@ npm run test:regression:chrome</code></pre></div>
                 <ul>
                     <li><a href="../unit/">Unit · 16</a></li>
                     <li><a href="../functional/">Functional · 24</a></li>
-                    <li><a href="../integration/">Integration · 28</a></li>
-                    <li><a href="./" aria-current="page">Regression · 16</a></li>
+                    <li><a href="../integration/">Integration · 29</a></li>
+                    <li><a href="./" aria-current="page">Regression · 17</a></li>
                 </ul>
             </aside>
         </div>
     </main>
 
     <footer class="site-footer">
-        <div class="site-shell site-footer__inner"><p>16 Regression cases · one definition each</p><nav aria-label="Project links"><a href="../">Testing overview</a><a href="https://github.com/RIAEvangelist/easy-stack/tree/main/test/cases">Source catalog</a></nav></div>
+        <div class="site-shell site-footer__inner"><p>17 Regression cases · one definition each</p><nav aria-label="Project links"><a href="../">Testing overview</a><a href="https://github.com/RIAEvangelist/easy-stack/tree/main/test/cases">Source catalog</a></nav></div>
     </footer>
     <script type="module" src="../../assets/site.js"></script>
 </body>

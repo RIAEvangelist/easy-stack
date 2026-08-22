@@ -5,8 +5,8 @@ import {suiteCase} from '../catalog.js';
 const regression=suiteCase('regression');
 const root=new URL('../../',import.meta.url);
 const pages=[
-    'index.html','guide/index.html','api/index.html','patterns/index.html','browser/index.html',
-    'examples/index.html','playground/index.html','queue/index.html','migration/index.html','testing/index.html',
+    'index.html','why/index.html','guide/index.html','api/index.html','patterns/index.html','browser/index.html',
+    'examples/index.html','playground/index.html','queue/index.html','benchmarks/index.html','migration/index.html','testing/index.html',
     'testing/unit/index.html','testing/functional/index.html','testing/integration/index.html','testing/regression/index.html',
     'playground/frame.html'
 ];

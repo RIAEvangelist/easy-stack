@@ -8,13 +8,15 @@ const integration=suiteCase('integration');
 integration('I024','server.resolve.valid','resolver maps valid root and nested site paths',()=>{
     equal(resolveRequest('/').endsWith('easy-stack'),true);
     equal(resolveRequest('/guide/').endsWith('guide'),true);
+    equal(resolveRequest('/why/').endsWith('why'),true);
+    equal(resolveRequest('/benchmarks/').endsWith('benchmarks'),true);
     equal(resolveRequest('/playground/').endsWith('playground'),true);
     equal(resolveRequest('/testing/unit/').endsWith('unit'),true);
 });
 
 integration('I025','server.serve.html','local server serves documentation and runner HTML',async()=>{
     await withServer(async port=>{
-        for(const path of ['/','/guide/','/playground/','/playground/frame.html','/testing/unit/']){
+        for(const path of ['/','/why/','/guide/','/playground/','/playground/frame.html','/benchmarks/','/testing/unit/']){
             const response=await request(port,path);
             equal(response.status,200,`${path} did not return 200.`);
             equal(response.headers['content-type'],'text/html; charset=utf-8',`${path} has the wrong type.`);

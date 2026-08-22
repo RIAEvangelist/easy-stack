@@ -1,0 +1,26 @@
+{
+  "captured": "2026-08-21",
+  "hardware": "Intel(R) Core(TM) Ultra 9 275HX",
+  "platform": "win32 x64",
+  "methodology": "Median of 21 alternating samples at 100000 operations; forced GC, retained construction instances, and validated checksums; lower is faster.",
+  "baseline": "2.0.0 WeakMap state",
+  "candidate": "2.1.0 private fields",
+  "runs": [
+    {
+      "runtime": "v22.13.0",
+      "v8": "12.4.254.21-node.22",
+      "metrics": [
+        {"label": "Construct instances", "baselineMs": 78.05, "candidateMs": 4.36, "speedup": 17.92},
+        {"label": "Schedule and run task turns", "baselineMs": 5.83, "candidateMs": 2.43, "speedup": 2.4}
+      ]
+    },
+    {
+      "runtime": "v24.18.0",
+      "v8": "13.6.233.17-node.50",
+      "metrics": [
+        {"label": "Construct instances", "baselineMs": 73.53, "candidateMs": 3.97, "speedup": 18.5},
+        {"label": "Schedule and run task turns", "baselineMs": 4.51, "candidateMs": 2.88, "speedup": 1.57}
+      ]
+    }
+  ]
+}

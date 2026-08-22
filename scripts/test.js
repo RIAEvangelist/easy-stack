@@ -7,7 +7,6 @@ const suites={
     browser:['test/regression-browser.js'],
     functional:['test/functional.js'],
     integration:['test/integration.js'],
-    legacy:['test/compatibility.js'],
     regression:['test/regression.js'],
     unit:['test/unit.js']
 };
@@ -16,15 +15,10 @@ if(!Object.prototype.hasOwnProperty.call(suites,selection)){
     console.error(`Unknown test selection: ${selection}`);
     process.exitCode=2;
 }else{
-    const environment={...process.env};
-    if(selection === 'legacy'){
-        environment.EASY_STACK_TEST_LEGACY='1';
-    }
-
     for(const file of suites[selection]){
         const result=spawnSync(process.execPath,[file],{
             cwd:fileURLToPath(new URL('../',import.meta.url)),
-            env:environment,
+            env:process.env,
             stdio:'inherit'
         });
 

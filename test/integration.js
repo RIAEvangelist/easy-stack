@@ -2,6 +2,7 @@ import './cases/integration-package.js';
 import './cases/integration-docs.js';
 import './cases/integration-server.js';
 import './cases/integration-replay.js';
+import './cases/integration-benchmarks.js';
 import {run} from './harness.js';
 import {validateCatalog} from './catalog.js';
 

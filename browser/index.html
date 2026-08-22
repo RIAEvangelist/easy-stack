@@ -28,6 +28,7 @@
             <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
                 <ul>
                     <li><a href="../">Overview</a></li>
+                    <li><a href="../why/">Why easy-stack</a></li>
                     <li><a href="../guide/">Guide</a></li>
                     <li><a href="../api/">API</a></li>
                     <li><a href="../patterns/">Patterns</a></li>
@@ -35,6 +36,7 @@
                     <li><a href="../examples/">Examples</a></li>
                     <li><a href="../playground/">Playground</a></li>
                     <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../benchmarks/">Benchmarks</a></li>
                     <li><a href="../migration/">Migration</a></li>
                     <li><a href="../testing/">Testing</a></li>
                 </ul>
@@ -53,7 +55,7 @@
             <article class="prose">
                 <section id="esm">
                     <h2>Native ES module</h2>
-                    <p>Use <code>stack.js</code> directly from a local installation, your own server, or an npm-aware CDN. The browser module has no Node-specific imports.</p>
+                    <p>Use <code>stack.js</code> directly from a local installation, your own server, or an npm-aware CDN. The browser module has no Node-specific imports and uses native private class fields.</p>
                     <div class="code-block"><pre><code>&lt;script type=<span class="code-string">"module"</span>&gt;
     <span class="code-keyword">import</span> Stack <span class="code-keyword">from</span> <span class="code-string">"./node_modules/easy-stack/stack.js"</span>;
 
@@ -68,7 +70,7 @@
 
                 <section id="classic">
                     <h2>Modern classic script</h2>
-                    <p><code>stack-vanilla.js</code> installs <code>globalThis.Stack</code> for a classic script environment. It uses modern JavaScript primitives without module syntax.</p>
+                    <p><code>stack-vanilla.js</code> installs <code>globalThis.Stack</code> for a classic script environment. It uses private class fields without module syntax.</p>
                     <div class="code-block"><pre><code>&lt;script src=<span class="code-string">"./node_modules/easy-stack/stack-vanilla.js"</span>&gt;&lt;/script&gt;
 &lt;script&gt;
     var stack = new Stack();
@@ -77,7 +79,7 @@
         this.next();
     });
 &lt;/script&gt;</code></pre></div>
-                    <p>Use this path when an existing page expects a global constructor but still targets current browsers.</p>
+                    <p>Use this path when an existing page expects a global constructor and targets browsers with private-field support. Use <code>es5.js</code> when the browser cannot parse that syntax.</p>
                 </section>
 
                 <section>

@@ -7,6 +7,7 @@ const integration=suiteCase('integration');
 const root=new URL('../../',import.meta.url);
 const primaryPages=[
     'index.html',
+    'why/index.html',
     'guide/index.html',
     'api/index.html',
     'patterns/index.html',
@@ -14,6 +15,7 @@ const primaryPages=[
     'examples/index.html',
     'playground/index.html',
     'queue/index.html',
+    'benchmarks/index.html',
     'migration/index.html',
     'testing/index.html'
 ];
@@ -70,16 +72,17 @@ function catalog(){
     return catalogCache;
 }
 
-integration('I012','docs.pages.structure','ten primary pages and four suite catalogs exist',()=>{
+integration('I012','docs.pages.structure','twelve primary pages and four suite catalogs exist',()=>{
     const missing=allPages.filter(name=>!fs.existsSync(new URL(name,root)));
     deepEqual(missing,[]);
-    equal(primaryPages.length,10);
+    equal(primaryPages.length,12);
     equal(suitePages.length,4);
 });
 
 integration('I013','docs.pages.sections','every page exposes its focused section contract',()=>{
     const required={
         'index.html':['overview','guarantees','routes'],
+        'why/index.html':['why','fit','proof','tradeoffs'],
         'guide/index.html':['start','install','first-stack','model'],
         'api/index.html':['api','methods','state'],
         'patterns/index.html':['patterns','priority','gates','errors'],
@@ -87,6 +90,7 @@ integration('I013','docs.pages.sections','every page exposes its focused section
         'examples/index.html':['examples','try-playground','recipes'],
         'playground/index.html':['playground','controls','code','pending','trace'],
         'queue/index.html':['queue','comparison','choice'],
+        'benchmarks/index.html':['benchmarks','results','method','reproduce'],
         'migration/index.html':['migration','changes','checklist'],
         'testing/index.html':['testing','suites','counting','coverage','ci'],
         'testing/unit/index.html':['suite','catalog','run'],
@@ -113,7 +117,7 @@ integration('I014','docs.links.local','every local link, asset, and fragment res
     deepEqual(missing,[],'Missing local documentation targets.');
 });
 
-integration('I015','docs.navigation.routes','every page navigation links all ten primary routes',()=>{
+integration('I015','docs.navigation.routes','every page navigation links all twelve primary routes',()=>{
     const expected=primaryPages.map(name=>new URL(name,root).href).sort();
     for(const pageName of allPages){
         const source=read(pageName);
@@ -141,7 +145,7 @@ integration('I016','docs.navigation.current','every page navigation marks exactl
 integration('I017','docs.readme.routing','README starts with the header and routes to focused docs',()=>{
     const readme=read('README.md');
     equal(readme.startsWith('[![easy-stack — explicit LIFO flow control for JavaScript](https://raw.githubusercontent.com/RIAEvangelist/easy-stack/main/assets/easy-stack-header.png)](https://riaevangelist.github.io/easy-stack/)'),true);
-    for(const path of ['guide/','api/','patterns/','browser/','examples/','playground/','testing/']){
+    for(const path of ['why/','guide/','api/','patterns/','browser/','examples/','playground/','benchmarks/','testing/']){
         equal(readme.includes(`https://riaevangelist.github.io/easy-stack/${path}`),true,`README omits ${path}.`);
     }
 });
@@ -183,17 +187,28 @@ integration('I020','docs.testing.catalog','test scripts and suite pages match th
     equal(JSON.parse(read('vanilla-test.config.json')).entry,'./test/coverage.js');
 });
 
-integration('I021','workflows.ci.gates','CI exposes suite, coverage, compatibility, browser, and package gates',()=>{
+integration('I021','workflows.ci.gates','CI exposes suite, exact-floor, coverage, browser, package, benchmark, and publish gates',()=>{
     const ci=read('.github/workflows/ci.yml');
+    const publish=read('.github/workflows/npm-publish.yml');
     for(const suite of ['unit','functional','integration','regression']){
         equal(ci.includes(`npm run test:${suite}`),true,`CI omits ${suite}.`);
     }
     equal(ci.includes('npm run test:regression:chrome'),true);
     equal(ci.includes('npm run coverage'),true);
-    equal(ci.includes("'12.22.12'"),true);
-    equal(ci.includes('node ./scripts/test.js legacy'),true);
+    equal(ci.includes("'22.13.0'"),true);
+    equal(ci.includes('12.22.12'),false);
+    equal(ci.includes('scripts/test.js legacy'),false);
     equal(ci.includes('npm pack'),true);
+    equal(ci.includes('npm run benchmark'),true);
+    equal(ci.includes('fetch-depth: 0'),true);
+    equal(ci.includes('benchmark-results'),true);
     equal(ci.includes('node ./scripts/test-catalog.js --github-summary'),true);
+    equal(publish.includes('release:'),true);
+    equal(publish.includes('id-token: write'),true);
+    equal(publish.includes('^[0-9]+\\.[0-9]+\\.[0-9]+$'),true);
+    equal(publish.includes('github.event.release.name'),true);
+    equal(publish.includes('test "$RELEASE_TITLE" = "$PACKAGE_VERSION"'),true);
+    equal(publish.includes('npm publish --access public'),true);
 });
 
 integration('I022','workflows.pages.artifact','Pages is CI-gated and assembles every curated route and runner asset',()=>{
@@ -211,6 +226,8 @@ integration('I022','workflows.pages.artifact','Pages is CI-gated and assembles e
         equal(pages.includes(`playground/${file}`),true,`Pages workflow omits playground/${file}.`);
         equal(pages.includes(`_site/playground/${file}`),true,`Pages artifact omits playground/${file}.`);
     }
+    equal(pages.includes('benchmarks/results.json'),true);
+    equal(pages.includes('_site/benchmarks/results.json'),true);
 });
 
 integration('I023','repository.javascript-only','repository remains JavaScript-only',()=>{

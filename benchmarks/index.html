@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Reproduce easy-stack 2.1 performance benchmarks against the exact 2.0.0 WeakMap implementation on Node 22 and Node 24.">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Benchmarks · easy-stack">
+    <meta property="og:description" content="Version-to-version native JavaScript benchmarks with retained allocations, alternating samples, and validated checksums.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://riaevangelist.github.io/easy-stack/benchmarks/">
+    <meta property="og:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <meta property="og:image:alt" content="easy-stack with a glowing last-in-first-out stack of layers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Benchmarks · easy-stack">
+    <meta name="twitter:description" content="Version-to-version native JavaScript benchmarks with retained allocations, alternating samples, and validated checksums.">
+    <meta name="twitter:image" content="https://riaevangelist.github.io/easy-stack/assets/og.png">
+    <link rel="canonical" href="https://riaevangelist.github.io/easy-stack/benchmarks/">
+    <link rel="stylesheet" href="../assets/site.css">
+    <title>Benchmarks · easy-stack</title>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-shell site-header__bar">
+            <a class="brand" href="../" aria-label="easy-stack documentation home"><span class="brand__mark" aria-hidden="true"></span><span>easy-stack</span></a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-nav-toggle>Menu</button>
+            <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
+                <ul>
+                    <li><a href="../">Overview</a></li>
+                    <li><a href="../why/">Why easy-stack</a></li>
+                    <li><a href="../guide/">Guide</a></li>
+                    <li><a href="../api/">API</a></li>
+                    <li><a href="../patterns/">Patterns</a></li>
+                    <li><a href="../browser/">Browser</a></li>
+                    <li><a href="../examples/">Examples</a></li>
+                    <li><a href="../playground/">Playground</a></li>
+                    <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../benchmarks/" aria-current="page">Benchmarks</a></li>
+                    <li><a href="../migration/">Migration</a></li>
+                    <li><a href="../testing/">Testing</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <header class="site-shell page-hero" id="benchmarks">
+            <p class="eyebrow">Version benchmark</p>
+            <h1>Less indirection on every hot path.</h1>
+            <p class="lede">easy-stack 2.1 replaces two WeakMaps with native private fields. The benchmark compares that implementation with the exact tagged 2.0.0 runtime—same API work, same process, alternating order.</p>
+        </header>
+
+        <div class="site-shell page-layout">
+            <article class="prose">
+                <section id="results">
+                    <h2>Captured results</h2>
+                    <p>Lower is faster. Each value is the median of 21 samples at 100,000 operations on an Intel Core Ultra 9 275HX running Windows x64.</p>
+                    <figure class="benchmark-figure" aria-labelledby="benchmark-chart-title" aria-describedby="benchmark-chart-description">
+                        <figcaption id="benchmark-chart-title">easy-stack 2.1.0 compared with 2.0.0</figcaption>
+                        <p id="benchmark-chart-description">Horizontal bars show milliseconds per 100,000 operations. Shorter bars are faster; exact values remain in the table below.</p>
+                        <div class="benchmark-legend" aria-label="Series legend">
+                            <span><i class="benchmark-swatch benchmark-swatch--baseline" aria-hidden="true"></i>2.0.0 · WeakMap</span>
+                            <span><i class="benchmark-swatch benchmark-swatch--candidate" aria-hidden="true"></i>2.1.0 · private fields</span>
+                        </div>
+                        <div class="benchmark-plots">
+                            <section class="benchmark-plot" aria-label="Retained instance construction chart">
+                                <h3>Retained construction</h3>
+                                <p>Milliseconds per 100,000 instances</p>
+                                <div class="benchmark-row"><span>Node 22.13 · old</span><span class="benchmark-track"><i class="benchmark-bar benchmark-bar--baseline" style="--bar-width: 100%"></i></span><strong>78.05</strong></div>
+                                <div class="benchmark-row"><span>Node 22.13 · new</span><span class="benchmark-track"><i class="benchmark-bar benchmark-bar--candidate" style="--bar-width: 5.59%"></i></span><strong>4.36</strong></div>
+                                <div class="benchmark-row"><span>Node 24.18 · old</span><span class="benchmark-track"><i class="benchmark-bar benchmark-bar--baseline" style="--bar-width: 94.21%"></i></span><strong>73.53</strong></div>
+                                <div class="benchmark-row"><span>Node 24.18 · new</span><span class="benchmark-track"><i class="benchmark-bar benchmark-bar--candidate" style="--bar-width: 5.09%"></i></span><strong>3.97</strong></div>
+                            </section>
+                            <section class="benchmark-plot" aria-label="Task-turn scheduling chart">
+                                <h3>Task-turn scheduling</h3>
+                                <p>Milliseconds per 100,000 task turns</p>
+                                <div class="benchmark-row"><span>Node 22.13 · old</span><span class="benchmark-track"><i class="benchmark-bar benchmark-bar--baseline" style="--bar-width: 100%"></i></span><strong>5.83</strong></div>
+                                <div class="benchmark-row"><span>Node 22.13 · new</span><span class="benchmark-track"><i class="benchmark-bar benchmark-bar--candidate" style="--bar-width: 41.68%"></i></span><strong>2.43</strong></div>
+                                <div class="benchmark-row"><span>Node 24.18 · old</span><span class="benchmark-track"><i class="benchmark-bar benchmark-bar--baseline" style="--bar-width: 77.36%"></i></span><strong>4.51</strong></div>
+                                <div class="benchmark-row"><span>Node 24.18 · new</span><span class="benchmark-track"><i class="benchmark-bar benchmark-bar--candidate" style="--bar-width: 49.40%"></i></span><strong>2.88</strong></div>
+                            </section>
+                        </div>
+                    </figure>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Runtime</th><th>Scenario</th><th>2.0.0 · WeakMap</th><th>2.1.0 · private fields</th><th>Speedup</th></tr></thead>
+                            <tbody>
+                                <tr><td>Node 22.13.0</td><td>Construct retained instances</td><td>78.05 ms</td><td>4.36 ms</td><td><strong>17.92×</strong></td></tr>
+                                <tr><td>Node 22.13.0</td><td>Schedule and run task turns</td><td>5.83 ms</td><td>2.43 ms</td><td><strong>2.40×</strong></td></tr>
+                                <tr><td>Node 24.18.0</td><td>Construct retained instances</td><td>73.53 ms</td><td>3.97 ms</td><td><strong>18.50×</strong></td></tr>
+                                <tr><td>Node 24.18.0</td><td>Schedule and run task turns</td><td>4.51 ms</td><td>2.88 ms</td><td><strong>1.57×</strong></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p><a href="./results.json">Download the captured machine-readable results.</a> Timing varies by machine and load; the repeatable conclusion is the direction and scale of the improvement, not a universal millisecond promise.</p>
+                </section>
+
+                <section id="method">
+                    <h2>Method designed to resist flattering results</h2>
+                    <ol>
+                        <li>Load the exact <code>2.0.0:stack.cjs</code> source from the repository tag.</li>
+                        <li>Warm both implementations three times before recording samples.</li>
+                        <li>Alternate which implementation runs first to reduce order bias.</li>
+                        <li>Force garbage collection before every timed sample.</li>
+                        <li>Retain every constructed instance through the timed interval so allocations cannot disappear as dead work.</li>
+                        <li>Validate nonzero checksums for every sample and fail on a behavioral mismatch.</li>
+                        <li>Report medians rather than a single best run.</li>
+                    </ol>
+                    <div class="callout">
+                        <strong>Scope of the claim</strong>
+                        <p>The benchmark isolates runner overhead. Real applications also spend time inside their tasks, so end-to-end gains depend on how much work each task performs.</p>
+                    </div>
+                </section>
+
+                <section id="reproduce">
+                    <h2>Run it yourself</h2>
+                    <div class="code-block"><pre><code>git clone https://github.com/RIAEvangelist/easy-stack.git
+cd easy-stack
+npm run benchmark</code></pre></div>
+                    <p>Override the sample or operation counts without changing the script:</p>
+                    <div class="code-block"><pre><code>BENCHMARK_SAMPLES=31 BENCHMARK_ITERATIONS=200000 npm run benchmark</code></pre></div>
+                    <p>The command emits JSON with the runtime, V8 version, platform, processor, methodology, medians, and computed speedups. CI also uploads a fresh benchmark artifact for each successful main build.</p>
+                    <a class="next-page" href="../migration/">
+                        <span>Next page<strong>Migration guidance</strong></span>
+                        <b aria-hidden="true">→</b>
+                    </a>
+                </section>
+            </article>
+
+            <aside class="page-rail" aria-label="Benchmark summary">
+                <strong>Captured improvement</strong>
+                <ul>
+                    <li>About 18× instance construction</li>
+                    <li>1.57–2.40× task-turn scheduling</li>
+                    <li>Exact 2.0.0 baseline</li>
+                    <li>21 alternating samples</li>
+                    <li>Validated checksums</li>
+                </ul>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-shell site-footer__inner">
+            <p>easy-stack v2 · zero runtime dependencies · MIT licensed</p>
+            <nav aria-label="Project links">
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/scripts/benchmark.js">Benchmark source</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/actions">CI evidence</a>
+                <a href="https://www.npmjs.com/package/easy-stack">npm</a>
+                <a href="https://github.com/RIAEvangelist/easy-stack/blob/main/licence">License</a>
+            </nav>
+        </div>
+    </footer>
+    <script type="module" src="../assets/site.js"></script>
+</body>
+</html>

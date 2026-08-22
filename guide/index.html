@@ -28,6 +28,7 @@
             <nav class="site-nav" id="site-navigation" aria-label="Primary navigation" data-site-nav>
                 <ul>
                     <li><a href="../">Overview</a></li>
+                    <li><a href="../why/">Why easy-stack</a></li>
                     <li><a href="../guide/" aria-current="page">Guide</a></li>
                     <li><a href="../api/">API</a></li>
                     <li><a href="../patterns/">Patterns</a></li>
@@ -35,6 +36,7 @@
                     <li><a href="../examples/">Examples</a></li>
                     <li><a href="../playground/">Playground</a></li>
                     <li><a href="../queue/">Stack vs queue</a></li>
+                    <li><a href="../benchmarks/">Benchmarks</a></li>
                     <li><a href="../migration/">Migration</a></li>
                     <li><a href="../testing/">Testing</a></li>
                 </ul>
@@ -53,14 +55,14 @@
             <article class="prose">
                 <section id="install">
                     <h2>Install and import</h2>
-                    <p>easy-stack has no runtime dependencies. Node.js 12.22 or newer can use the CommonJS entry; modern Node and browsers can use the native ES module.</p>
+                    <p>easy-stack has no runtime dependencies. Node.js 22.13 or newer can use native ESM or CommonJS; both loaders resolve the same synchronous <code>stack.js</code> implementation.</p>
                     <div class="code-block"><pre><code>npm install easy-stack</code></pre></div>
                     <div class="code-block"><pre><code><span class="code-comment">// Native ESM</span>
 <span class="code-keyword">import</span> Stack <span class="code-keyword">from</span> <span class="code-string">'easy-stack'</span>;
 
 <span class="code-comment">// CommonJS</span>
 <span class="code-keyword">const</span> Stack = require(<span class="code-string">'easy-stack'</span>);</code></pre></div>
-                    <p>Both imports expose the same public behavior. The package export map selects the correct implementation without a compiler or bundler.</p>
+                    <p>Both imports return the same constructor identity. The package uses Node's native ESM/CommonJS interoperability without a compiler, bundler, or duplicate runtime file.</p>
                 </section>
 
                 <section id="first-stack">

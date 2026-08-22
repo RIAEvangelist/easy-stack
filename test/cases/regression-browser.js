@@ -97,7 +97,7 @@ async function withPlayground(check){
 }
 
 regression(
-    'R015',
+    'R016',
     'playground.worker.opaque-classic-bootstrap',
     'opaque editor sandbox runs synchronized LIFO source in a classic Worker',
     async()=>withPlayground(async({frame,page})=>{
@@ -129,7 +129,7 @@ regression(
 );
 
 regression(
-    'R016',
+    'R017',
     'playground.worker.completed-module-hard-lifetime',
     'completed async module is terminated at the hard Worker lifetime',
     async()=>withPlayground(async({frame})=>{
